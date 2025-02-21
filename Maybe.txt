@@ -1,0 +1,132 @@
+<td>
+                                <asp:Label ID="lbl_start_time" runat="server" Text="Start Time:"></asp:Label> 
+                                <asp:TextBox ID="tb_start_time" runat="server" Text='<%#Bind("start_time") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_end_time" runat="server" Text="End Time:"></asp:Label> 
+                                <asp:TextBox ID="tb_end_time" runat="server"  Text='<%#Bind("end_time") %>'></asp:TextBox>
+                            </td>
+
+
+
+=======================================
+<td>
+                                <asp:Label ID="lbl_mident_text" runat="server" Text="Mident: "></asp:Label> 
+                                <asp:TextBox ID="tb_mident_text" runat="server" Text='<%#Bind("mident") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_description_text" runat="server" Text="Description Text: "></asp:Label> 
+                                <asp:TextBox ID="tb_description_text" runat="server" Text='<%#Bind("description_text") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_description_abbr" runat="server" Text="Description Abbr:"></asp:Label> 
+                                <asp:TextBox ID="tb_description_abbr" runat="server" Text='<%#Bind("description_abbr") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_street_1" runat="server" Text="Street 1:"></asp:Label> 
+                                <asp:TextBox ID="tb_street_1" runat="server" Text='<%#Bind("street_1") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_street_2" runat="server" Text="Street 2:"></asp:Label> 
+                                <asp:TextBox ID="tb_street_2" runat="server"  Text='<%#Bind("street_2") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_city" runat="server" Text="City:"></asp:Label> 
+                                <asp:TextBox ID="tb_city" runat="server"  Text='<%#Bind("city") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_province" runat="server" Text="Province:"></asp:Label> 
+                                <asp:TextBox ID="tb_province" runat="server"  Text='<%#Bind("province") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_postal_code" runat="server" Text="Postal Code:"></asp:Label>
+                                <asp:TextBox ID="tb_postal_code" runat="server"  Text='<%#Bind("postal_code") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_telephone_area" runat="server" Text="Telephone Area:"></asp:Label> 
+                                <asp:TextBox ID="tb_telephone_area" runat="server"  Text='<%#Bind("telephone_area") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_telephone_number" runat="server" Text="Telephone Number:"></asp:Label> 
+                                <asp:TextBox ID="tb_telephone_number" runat="server"  Text='<%#Bind("telephone_no") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_telephone_extension" runat="server" Text="Extension: "></asp:Label> 
+                                <asp:TextBox ID="tb_telephone_extension" runat="server" Width="50"  Text='<%#Bind("telephone_ext") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_geographic_area_code" runat="server" Text="Geographic Area Code: "></asp:Label>
+                                <asp:TextBox ID="tb_geographic_area_code" runat="server"  Text='<%#Bind("geogrphic_area_code") %>'></asp:TextBox>
+                            </td>
+
+                            <td>
+                                <asp:Label ID="lbl_onsis_location_type" runat="server" Text="ONSIS Location Type: "></asp:Label> 
+                                <asp:TextBox ID="tb_onsis_location_type" runat="server" Text='<%#Bind("onsis_location_type") %>'>></asp:TextBox>
+                                
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_record_status" runat="server" Text="Record Status: "></asp:Label>
+                                <asp:TextBox ID="tb_record_status" runat="server"  Text='<%#Bind("record_status") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_alternate_location_code" runat="server" Text="Alternate Location Code: "></asp:Label> 
+                                <asp:TextBox ID="tb_alternate_location_code" runat="server"  Text='<%#Bind("alternate_location_code") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_school_code" runat="server" Text="School Code:"></asp:Label> 
+                                <asp:TextBox ID="tb_school_code" runat="server"  Text='<%#Bind("school_code") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_fax_area" runat="server" Text="Fax Area:"></asp:Label>
+                                <asp:TextBox ID="tb_fax_area" runat="server" Text='<%#Bind("fax_area") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_fax_number" runat="server" Text="Fax Number:"></asp:Label>
+                                <asp:TextBox ID="tb_fax_number" runat="server"  Text='<%#Bind("fax_no") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_panel" runat="server" Text="Panel:"></asp:Label>
+                                <asp:TextBox ID="tb_panel" runat="server"  Text='<%#Bind("panel") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_semester_code" runat="server" Text="Semester Code:"></asp:Label>
+                                <asp:TextBox ID="tb_semester_code" runat="server" Text='<%#Bind("semester_code") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_speed_dial_number" runat="server" Text="Speed Dial Number:"></asp:Label>
+                                <asp:TextBox ID="tb_speed_dial_number" runat="server" Text='<%#Bind("speed_dial_number") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_fr_immersion" runat="server" Text="FR Immersion:"></asp:Label>
+                                <asp:TextBox ID="tb_fr_immersion" runat="server" Text='<%#Bind("fr_immersion") %>'></asp:TextBox>
+                            </td>
+
+
+                            <td>
+                                <asp:Label ID="lbl_employee_id" runat="server" Text="Employee ID:"></asp:Label>
+                                <asp:TextBox ID="tb_employee_id" runat="server" Visible="False" Text='<%#Bind("employee_id") %>'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lbl_family_school" runat="server" Text="Family School:" Enabled="True" Visible="False"></asp:Label>
+                                <asp:TextBox ID="tb_family_school" runat="server" Visible="False" Text='<%#Bind("family_school") %>'></asp:TextBox>
+                            </td>

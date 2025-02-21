@@ -1,0 +1,315 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main_User.Master.cs" Inherits="Security_Card_System.Main_User" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title>Common Data Application Server</title>
+
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+    <link href='https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css' />
+    <link href="https://s3.amazonaws.com/wrdsb-ui-assets/intranet/master.css" rel="stylesheet" />
+
+    <style type="text/css">
+        .cssPager td {
+            font-size: 10px;
+            line-height: 100%;
+        }
+        .nav > li.active {
+            background-color: #034d8b;
+        }
+        .nav > li {
+            background-color: #005fae;
+        }
+        .nav > li > a:hover {
+            background-color: #034d8b;
+        }
+    </style>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#inc_font').click(function () {
+                curSize = parseInt($('body').css('font-size')) + 2;
+                if (curSize <= 22)
+                    $('body').css('font-size', curSize);
+            });
+            $('#dec_font').click(function () {
+                curSize = parseInt($('body').css('font-size')) - 2;
+                if (curSize >= 16)
+                    $('body').css('font-size', curSize);
+            });
+        });
+    </script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body id="top">
+    <form id="form1" runat="server">
+        <div id="site-wide-navigation" style="height:40px;">
+
+            <!-- persistent global navigation -->
+
+            <div id="persistent-nav">
+                <!--<ul class="mainlinks">
+                    <li><a href="https://staff.wrdsb.ca/" >Back to the Staff Intranet</a></li>
+
+                </ul>
+                -->
+                <div class="adminlinks">
+                    Logged in as: 
+                    <asp:Label ID="lbl_username" runat="server" style="font-weight: bold;"></asp:Label>&nbsp;&nbsp;|&nbsp;
+                    <asp:Label ID="lbl_location" runat="server" style="font-weight: bold;"></asp:Label>&nbsp;&nbsp;|
+                    <asp:LinkButton ID="lb_logout" runat="server" Text="Logout"></asp:LinkButton>
+                </div>
+            </div>
+        </div>
+        <div class="container-top">
+            <div id="masthead">
+                <!--<div class="header hello">-->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-sm-8">
+                                <div id="site_details" role="heading">
+                                    <p id="sitename" style="font-size: 40px !important; font-family: 'Open Sans Condensed', serif !important; padding:10px 0 10px 0;">
+                                        <span>Common Data Application Server (CDAS)</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                <!--</div>-->
+            </div>
+            <!-- contextual navigation -->
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <%--  <div class="col-md-12">
+                       
+                        <div class="staff-shortcuts">
+                            <div class="accessability">
+                                <a href="#" id="inc_font" title="Increase Font Size">A+</a>
+                                <a href="#" id="dec_font" title="Decrease Font Size">A-</a>
+                            </div>
+                        </div>
+                    </div>--%>
+                <!--<div class="col-sm-12 col-md-12 col-lg-12" role="complementary">
+
+
+                    <h1><a id="lstaff" style="color: #62bb46" href=" ">COVID Staff Reporting</a></h1>
+
+                </div>
+                    -->
+            </div>
+
+            <div  class="navbar my-navbar" role="navigation">
+            
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle togglesearch" data-toggle="collapse" data-target=".navbar-search">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-search"></span>
+                    </button>
+
+                    <button type="button" class="navbar-toggle togglenav" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <a class="navbar-brand" href="#">Staff Directory</a>
+                </div>
+                
+            
+                <div class="collapse navbar-search">
+                    <p class="text-center">
+                        <input type="text" class="" /><span class="icon-search"></span>
+                    </p>
+                </div>
+               
+
+                <div class="collapse navbar-collapse">
+                    <ul class="nav nav-justified">
+                       <li id="maintenance_link" runat="server"><a href="Maintenance.aspx">Locations</a></li> 
+                        <li id="maintenance_tables_link" runat="server"><a href="Maintenance_Tables.aspx">Maintenence Tables</a></li> 
+                        <!-- <li id="create_link" runat="server"><a href="temporary_access.aTemporary Accessccess</a></li> -->
+                    </ul> 
+                </div>
+                <!--background #005fae active #034d8b-->
+                <!-- /.nav-collapse -->
+
+
+
+            <!-- /.navbar -->
+        </div>
+        <!--<div class="container" id="second_login_label">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="login-detail">
+                        Logged in as: <asp:Label ID="lbl_username2" runat="server" Style="font-weight: bold;"></asp:Label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="div_alert" runat="server"></div>
+                </div>
+            </div>
+        </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+        <%--<div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <address>
+                            <h4>Waterloo Region District School Board</h4>
+                            <p>
+                                51 Ardelt Avenue<br />
+                                Kitchener, ON N2C 2R5
+                            </p>
+
+                            <p>
+                                Switchboard: 519-570-0003<br />
+                                <a href="http://www.wrdsb.ca/about-the-wrdsb/contact/" target="_blank">Contact Information</a>
+                            </p>
+
+                            <p><a href="http://www.wrdsb.ca/about-the-wrdsb/contact/website-feedback/" target="_blank">Website Feedback Form</a></p>
+                        </address>
+
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <h4>Need Help?</h4>
+                        <% if (ConfigurationManager.AppSettings["isInternal"] == "true") %>
+                        <% { %>
+                        <!-- for internal applications or administrative screens 
+            make sure you link to the direct link for a ticket -->
+                        <p><a href="<%:ConfigurationManager.AppSettings["serviceDesk"].ToString() %>" target="_blank">Questions? Requests? ITService Desk!</a></p>
+                        <% } %>
+                    </div>
+                    <% if (ConfigurationManager.AppSettings["isInternal"] == "true") %>
+                    <% { %>
+                    <div class="col-sm-6 col-md-3">
+
+                        <h4>Application Information</h4>
+                        <h4>Owner</h4>
+                        <p><%:ConfigurationManager.AppSettings["owner"].ToString() %></p>
+                        <p>Email: <a href="mailto:<%:ConfigurationManager.AppSettings["ownerEmail"].ToString() %>"><%:ConfigurationManager.AppSettings["ownerEmail"].ToString() %></a></p>
+                        <h4>Developer</h4>
+                        <p><%:ConfigurationManager.AppSettings["developer"].ToString() %></p>
+                    </div>
+                    <% } %>
+                    <div class="col-sm-12 col-md-3">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h6 class="copyright">&copy; Waterloo Region District School Board, <%: DateTime.Now.Year %></h6>
+                    </div>
+                    <div class="col-sm-6">
+                        <h6 class="copyright text-right">A WRDSB-ITS Solution |
+                            <asp:Label ID="lbl_version" runat="server"></asp:Label>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>--%>
+        <div id="footer" class="footer" role="contentinfo">
+            <div id="fat-footer-container" class="container">
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-3" aria-labelledby="governance">
+                        <h1 id="footer-menu-governance">Governance</h1>
+                        <p><a id="footer-link-policies" style="color: white" href="https://staff.wrdsb.ca/policyprocedure/?page_id=71">Policies</a></p>
+                        <p><a id="footer-link-procedures" style="color: white" href="https://staff.wrdsb.ca/policyprocedure/?page_id=310">Procedures</a></p>
+                        <p><a id="footer-link-protocols" style="color: white" href="https://staff.wrdsb.ca/policyprocedure/?page_id=1047">Protocols/Guidelines</a></p>
+                        <p><a id="footer-link-board-forms" style="color: white" href="https://staff.wrdsb.ca/policyprocedure/?page_id=500">Board Forms</a></p>
+                        <p><a id="footer-link-all-staff-notices" style="color: white" href="https://staff.wrdsb.ca/all-staff-notices/">All Staff Notices</a></p>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3" aria-labelledby="g suite">
+                        <h1 id="footer-menu-g-suite">G Suite</h1>
+                        <p><a id="footer-link-google-mail" style="color: white" target="_blank" href="https://mail.google.com">Gmail</a></p>
+                        <p><a id="footer-link-google-calendar" style="color: white" target="_blank" href="https://calendar.google.com">Calendar</a></p>
+                        <p><a id="footer-link-google-drive" style="color: white" target="_blank" href="https://drive.google.com">Drive</a></p>
+                        <p><a id="footer-link-google-groups" style="color: white" target="_blank" href="https://groups.google.com">Groups</a></p>
+                        <p><a id="footer-link-g-suite-more" style="color: white" href="https://staff.wrdsb.ca/g-suite/">More...</a></p>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3" aria-labelledby="">
+                        <h1 id="footer-menu-help">Help!</h1>
+                        <p><a id="footer-link-sds" style="color: white" target="_blank" href="https://msdsmanagement.msdsonline.com/company/ccc3134c-662d-499b-862d-39480a4688ed/">SDS Quick Search (MSDS)</a></p>
+                        <p><a id="footer-link-osbie" style="color: white" target="_blank" href="http://osbie.wrdsb.ca/">OSBIE Injury Reporting System</a></p>
+                        <p><a id="footer-link-help-desk" style="color: white" target="_blank" href="https://itservicedesk.wrdsb.ca/">ITService Desk (Help Desk)</a></p>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3" aria-labelledby="">
+                        <h1 id="footer-menu-it-help">IT Help</h1>
+                        <p><a id="footer-link-password-reset" style="color: white" target="_blank" href="https://mypassword.wrdsb.ca/">Password Reset</a></p>
+                        <p><a id="footer-link-itservicedesk" style="color: white" target="_blank" href="https://itservicedesk.wrdsb.ca/">ITService Desk (Help Desk)</a></p>
+                        <p><a id="footer-link-wifi-docs" style="color: white" target="_blank" href="https://wifidocs.wrdsb.ca/">Wifi Docs</a></p>
+                        <p><a id="footer-link-it-help-more" style="color: white" href="https://staff.wrdsb.ca/its/">More...</a></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-3" aria-labelledby="">
+                        <h1 id="footer-menu-teachers">For Teachers</h1>
+                        <p><a id="footer-link-web-attendance" style="color: white" target="_blank" href="https://etrillium.wrdsb.ca/twebschool/TWEBATT/ptEntry.action?moduleId=TWEBATT">Trillium Web Attendance</a></p>
+                        <p><a id="footer-link-twea" style="color: white" target="_blank" href="https://etrillium.wrdsb.ca/trillium/">TWEA</a></p>
+                        <p><a id="footer-link-s4s" style="color: white" target="_blank" href="https://s4s.wrdsb.ca/">Support 4 Students (S4S)</a></p>
+                        <p><a id="footer-link-compass" style="color: white" target="_blank" href="https://compass.wrdsb.ca/portal/">Compass for Success (enCompass)</a></p>
+                        <p><a id="footer-link-d2l" style="color: white" target="_blank" href="http://wrdsb.elearningontario.ca/">Virtual Learning Environment (VLE/D2L)</a></p>
+                        <p><a id="footer-link-esl-tracker" style="color: white" target="_blank" href="https://etrillium.wrdsb.ca/twebboard/TWEBESL">ESL Tracker</a></p>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3" aria-labelledby="">
+                        <h1 id="footer-menu-school-staff">For School Staff</h1>
+                        <p><a id="footer-link-trillium-report-centre" style="color: white" target="_blank" href="http://ec-oraapp1.wrdsb.ca:8888/forms/frmservlet?config=TRRP">Trillium Report Centre</a></p>
+                        <p><a id="footer-link-school-day" style="color: white" target="_blank" href="https://www.school-day.com/">School Day</a></p>
+                        <p><a id="footer-link-ssr" style="color: white" href="https://staff.wrdsb.ca/eguide/">Single Source Resource (eGuide)</a></p>
+                        <p><a id="footer-link-translations" style="color: white" href="https://staff.wrdsb.ca/resources6/translations/">Translations</a></p>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3" aria-labelledby="">
+                        <h1 id="footer-menu-online-tools">Online Tools</h1>
+                        <p><a id="footer-link-staff-directory" style="color: white" href="https://test-staffdirectory.wrdsb.ca/   ">Staff Directory</a></p>
+                        <p><a id="footer-link-calendars" style="color: white" href="https://staff.wrdsb.ca/calendar/">Calendars</a></p>
+                        <p><a id="footer-link-ess" style="color: white" href="https://ess.wrdsb.ca">Employee Self-Service Portal</a></p>
+                        <p><a id="footer-link-mental-health" style="color: white" href="https://staff.wrdsb.ca/mental-health/">Mental Health</a></p>
+                        <p><a id="footer-link-online-tools-more" style="color: white" href="https://staff.wrdsb.ca/online-tools/">More...</a></p>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3" aria-labelledby="">
+                        <h1 id="footer-menu-training">Training and PD</h1>
+                        <p><a id="footer-link-oetc" style="color: white" target="_blank" href="https://training.wrdsb.ca">Online Employee Training Centre</a></p>
+                        <p><a id="footer-link-pd-place" style="color: white" target="_blank" href="http://wrdsb.pdplace.com/">PD Place</a></p>
+                        <p><a id="footer-link-equity" style="color: white" href="">Equity and Inclusion</a></p>
+                        <p><a id="footer-link-ntip" style="color: white" href="https://staff.wrdsb.ca/ntip/">New Teacher Induction Program (NTIP)</a></p>
+                        <p><a id="footer-link-training-more" style="color: white" href="https://staff.wrdsb.ca/training6/">More...</a></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+</html>

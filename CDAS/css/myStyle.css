@@ -1,0 +1,30 @@
+﻿th {
+    position: sticky;
+    top: 39px;
+}
+
+tr:hover {
+    background-color: #e6e6e6 !important;
+}
+
+td:hover {
+    background-color: #e6e6e6 !important;
+}
+
+.radiolist input[type="radio"] {
+    margin-right:2px;
+}
+.radiolist label {
+    margin-right:4px;
+}
+
+.checklist input[type="checkbox"] {
+    margin-right:2px;
+}
+.checklist label {
+    margin-right:4px;
+}
+
+.customLabel label {
+    font-weight:normal;
+}
