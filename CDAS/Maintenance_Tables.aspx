@@ -38,7 +38,10 @@
                 <asp:Label ID="lbl_insert_abbrv_name" runat="server" Text="Abbreviated Name: " Visible="false"></asp:Label>
                 <asp:TextBox ID="tb_insert_abbrv_name" runat="server" MaxLength="16" Visible="false"></asp:TextBox>
                 <asp:Label ID="lbl_insert_status" runat="server" Text="Status: " Visible="false"></asp:Label>
-                <asp:TextBox ID="tb_insert_status" runat="server" MaxLength="1" Width="30" Visible="false"></asp:TextBox><br />
+                <asp:DropDownList ID="ddl_insert_status" runat="server" Visible="false">
+                    <asp:ListItem Text="A" Value="A"></asp:ListItem>
+                    <asp:ListItem Text="I" Value="I"></asp:ListItem>
+                </asp:DropDownList>
                 <asp:Label ID="lbl_insert_employee_ID" runat="server" Text="Employee ID: " Visible="false"></asp:Label>
                 <asp:TextBox ID="tb_insert_employee_ID" runat="server" MaxLength="9" Visible="false" Width="100"></asp:TextBox>
                 <asp:Button ID="btn_insert_maint_table" runat="server" Text="Create!" OnClick="btn_insert_maint_table_Click" Visible="false"/><br />
@@ -52,7 +55,17 @@
                         <asp:BoundField DataField="CODE" HeaderText="Code" ReadOnly="true" />
                         <asp:BoundField DataField="FULL_NAME" HeaderText="Full Name"/>
                         <asp:BoundField DataField="ABBRV_NAME" HeaderText="Abbrv Name" />
-                        <asp:BoundField DataField="STATUS_FLAG" HeaderText="Status Flag" />
+                        <asp:TemplateField HeaderText="Status Flag">
+                            <ItemTemplate>
+                                <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("STATUS_FLAG") %>'></asp:Label>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList ID="ddl_status_flag" runat="server">
+                                    <asp:ListItem Text="A" Value="A"></asp:ListItem>
+                                    <asp:ListItem Text="I" Value="I"></asp:ListItem>
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
                         <asp:BoundField DataField="CHANGED_BY" HeaderText="Changed By" ReadOnly="true"/>
                         <asp:BoundField DataField="CHANGED_DATE" HeaderText="Changed Date" DataFormatString="{0:yyyy-MM-dd}" ReadOnly="true"/>
                     </Columns>
@@ -66,7 +79,17 @@
                         <asp:BoundField DataField="CODE" HeaderText="Code" ReadOnly="true" />
                         <asp:BoundField DataField="FULL_NAME" HeaderText="Full Name"/>
                         <asp:BoundField DataField="ABBRV_NAME" HeaderText="Abbrv Name" />
-                        <asp:BoundField DataField="STATUS_FLAG" HeaderText="Status Flag" />
+                        <asp:TemplateField HeaderText="Status Flag">
+                            <ItemTemplate>
+                                <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("STATUS_FLAG") %>'></asp:Label>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList ID="ddl_status_flag" runat="server">
+                                    <asp:ListItem Text="A" Value="A"></asp:ListItem>
+                                    <asp:ListItem Text="I" Value="I"></asp:ListItem>
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
                         <asp:BoundField DataField="CHANGED_BY" HeaderText="Changed By" ReadOnly="true"/>
                         <asp:BoundField DataField="CHANGED_DATE" HeaderText="Changed Date" DataFormatString="{0:yyyy-MM-dd}" ReadOnly="true"/>
                     </Columns>
@@ -80,7 +103,17 @@
                         <asp:BoundField DataField="PANEL" HeaderText="Panel" ReadOnly="true" />
                         <asp:BoundField DataField="FULL_NAME" HeaderText="Full Name"/>
                         <asp:BoundField DataField="ABBRV_NAME" HeaderText="Abbrv Name" />
-                        <asp:BoundField DataField="STATUS_FLAG" HeaderText="Status Flag" />
+                        <asp:TemplateField HeaderText="Status Flag">
+                            <ItemTemplate>
+                                <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("STATUS_FLAG") %>'></asp:Label>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList ID="ddl_status_flag" runat="server">
+                                    <asp:ListItem Text="A" Value="A"></asp:ListItem>
+                                    <asp:ListItem Text="I" Value="I"></asp:ListItem>
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
                         <asp:BoundField DataField="CHANGED_BY" HeaderText="Changed By" ReadOnly="true"/>
                         <asp:BoundField DataField="CHANGED_DATE" HeaderText="Changed Date" DataFormatString="{0:yyyy-MM-dd}" ReadOnly="true"/>
                     </Columns>
@@ -94,7 +127,17 @@
                         <asp:BoundField DataField="CODE" HeaderText="Code" ReadOnly="true"/>
                         <asp:BoundField DataField="FULL_NAME" HeaderText="Full Name"/>
                         <asp:BoundField DataField="ABBRV_NAME" HeaderText="Abbrv Name" />
-                        <asp:BoundField DataField="STATUS_FLAG" HeaderText="Status Flag" />
+                        <asp:TemplateField HeaderText="Status Flag">
+                            <ItemTemplate>
+                                <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("STATUS_FLAG") %>'></asp:Label>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList ID="ddl_status_flag" runat="server">
+                                    <asp:ListItem Text="A" Value="A"></asp:ListItem>
+                                    <asp:ListItem Text="I" Value="I"></asp:ListItem>
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
                         <asp:BoundField DataField="CHANGED_BY" HeaderText="Changed By" ReadOnly="true"/>
                         <asp:BoundField DataField="CHANGED_DATE" HeaderText="Changed Date" DataFormatString="{0:yyyy-MM-dd}" ReadOnly="true"/>
                         <asp:BoundField DataField="EMPLOYEE_ID" HeaderText="Employee ID"/>

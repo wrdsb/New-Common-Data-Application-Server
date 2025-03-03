@@ -177,13 +177,13 @@ namespace CDAS
         protected global::System.Web.UI.WebControls.Label lbl_insert_status;
 
         /// <summary>
-        /// tb_insert_status control.
+        /// ddl_insert_status control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_insert_status;
+        protected global::System.Web.UI.WebControls.DropDownList ddl_insert_status;
 
         /// <summary>
         /// lbl_insert_employee_ID control.

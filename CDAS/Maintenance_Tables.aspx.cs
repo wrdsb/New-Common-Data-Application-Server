@@ -77,8 +77,11 @@ namespace CDAS
             string code = gv_location_type.DataKeys[e.RowIndex].Value.ToString();
             string full_name = ((TextBox)gv_location_type.Rows[e.RowIndex].Cells[2].Controls[0]).Text.Trim();
             string abbrv_name = ((TextBox)gv_location_type.Rows[e.RowIndex].Cells[3].Controls[0]).Text.Trim();
-            string status_flag = ((TextBox)gv_location_type.Rows[e.RowIndex].Cells[4].Controls[0]).Text.Trim();
+            DropDownList ddl_status_flag = (DropDownList)gv_location_type.Rows[e.RowIndex].Cells[4].FindControl("ddl_status_flag") as DropDownList;
+            string status_flag = ddl_status_flag.SelectedValue;
             //string changed_date = ((TextBox)gv_location_type.Rows[e.RowIndex].Cells[6].Controls[0]).Text.Trim();
+
+            
 
             try
             {
@@ -216,7 +219,8 @@ namespace CDAS
             string code = gv_school_type.DataKeys[e.RowIndex].Value.ToString();
             string full_name = ((TextBox)gv_school_type.Rows[e.RowIndex].Cells[2].Controls[0]).Text.Trim();
             string abbrv_name = ((TextBox)gv_school_type.Rows[e.RowIndex].Cells[3].Controls[0]).Text.Trim();
-            string status_flag = ((TextBox)gv_school_type.Rows[e.RowIndex].Cells[4].Controls[0]).Text.Trim();
+            DropDownList ddl_status_flag = (DropDownList)gv_school_type.Rows[e.RowIndex].Cells[4].FindControl("ddl_status_flag") as DropDownList;
+            string status_flag = ddl_status_flag.SelectedValue;
 
             try
             {
@@ -320,7 +324,9 @@ namespace CDAS
             string panel = gv_panel.DataKeys[e.RowIndex].Value.ToString();
             string full_name = ((TextBox)gv_panel.Rows[e.RowIndex].Cells[2].Controls[0]).Text.Trim();
             string abbrv_name = ((TextBox)gv_panel.Rows[e.RowIndex].Cells[3].Controls[0]).Text.Trim();
-            string status_flag = ((TextBox)gv_panel.Rows[e.RowIndex].Cells[4].Controls[0]).Text.Trim();
+            DropDownList ddl_status_flag = (DropDownList)gv_panel.Rows[e.RowIndex].Cells[4].FindControl("ddl_status_flag") as DropDownList;
+            string status_flag = ddl_status_flag.SelectedValue;
+
 
             try
             {
@@ -411,7 +417,8 @@ namespace CDAS
             string code = gv_admin_area.DataKeys[e.RowIndex].Value.ToString();
             string full_name = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[2].Controls[0]).Text.Trim();
             string abbrv_name = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[3].Controls[0]).Text.Trim();
-            string status_flag = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[4].Controls[0]).Text.Trim();
+            DropDownList ddl_status_flag = (DropDownList)gv_panel.Rows[e.RowIndex].Cells[4].FindControl("ddl_status_flag") as DropDownList;
+            string status_flag = ddl_status_flag.SelectedValue;
             string employee_id = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[7].Controls[0]).Text.Trim();
             
             try
@@ -484,7 +491,7 @@ namespace CDAS
 
         protected void ddl_maintenance_tables_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List <Control> insert_controls = new List<Control> { lbl_insert, lbl_insert_code, tb_insert_code, lbl_insert_full_name , tb_insert_full_name, lbl_insert_abbrv_name, tb_insert_abbrv_name, lbl_insert_status, tb_insert_status }; 
+            List <Control> insert_controls = new List<Control> { lbl_insert, lbl_insert_code, tb_insert_code, lbl_insert_full_name , tb_insert_full_name, lbl_insert_abbrv_name, tb_insert_abbrv_name, lbl_insert_status, ddl_insert_status}; 
             List<Label> admin_label = new List<Label> { lbl_insert_employee_ID};
             List<TextBox> admin_textbox = new List<TextBox> { tb_insert_employee_ID };
             //Each time the drop down is used clear the main tables. We can assume the null value is just a full clear
@@ -595,7 +602,7 @@ namespace CDAS
             SqlCommand cmd = null;
             SqlDataReader reader;
             string query, selected_table;
-            List<TextBox> admin_textbox = new List<TextBox> { tb_insert_employee_ID, tb_insert_full_name, tb_insert_abbrv_name, tb_insert_status, tb_insert_code };
+            List<TextBox> admin_textbox = new List<TextBox> { tb_insert_employee_ID, tb_insert_full_name, tb_insert_abbrv_name, tb_insert_code };
             try
             {
 
@@ -625,12 +632,12 @@ namespace CDAS
                         }
                     }
 
-                    if (tb_insert_status.Text.Length != 1)
+                    if (ddl_insert_status.Text.Length != 1)
                     {
                         throw new Exception("Status Flag can only be A (Active) or I (Inactive)");
                     }
 
-                    if (tb_insert_status.Text != "A" && tb_insert_status.Text != "I")
+                    if (ddl_insert_status.Text != "A" && ddl_insert_status.Text != "I")
                     {
                         throw new Exception("Status Flag can only be A (Active) or I (Inactive)");
                     }
@@ -644,7 +651,7 @@ namespace CDAS
                         cmd.Parameters.AddWithValue("@code", tb_insert_code.Text.Trim());
                         cmd.Parameters.AddWithValue("@full_name", tb_insert_full_name.Text.Trim());
                         cmd.Parameters.AddWithValue("@abbrv_name", tb_insert_abbrv_name.Text.Trim());
-                        cmd.Parameters.AddWithValue("@status_flag", tb_insert_status.Text.Trim());
+                        cmd.Parameters.AddWithValue("@status_flag", ddl_insert_status.Text.Trim());
                         cmd.Parameters.AddWithValue("@changed_by", "STEPHET");
                         cmd.Parameters.AddWithValue("@changed_date", DateTime.Now);
                         cmd.Parameters.AddWithValue("@employee_ID", tb_insert_employee_ID.Text.Trim());
@@ -693,7 +700,7 @@ namespace CDAS
                     }
                     conn.Close();
 
-                    List<TextBox> textbox = new List<TextBox> {tb_insert_full_name, tb_insert_abbrv_name, tb_insert_status};
+                    List<TextBox> textbox = new List<TextBox> {tb_insert_full_name, tb_insert_abbrv_name};
                     foreach (TextBox text in textbox)
                     {
                         if (string.IsNullOrEmpty(text.Text))
@@ -702,12 +709,12 @@ namespace CDAS
                         }
                     }
 
-                    if (tb_insert_status.Text.Length != 1)
+                    if (ddl_insert_status.Text.Length != 1)
                     {
                         throw new Exception("Status Flag can only be A (Active) or I (Inactive)");
                     }
 
-                    if (tb_insert_status.Text != "A" && tb_insert_status.Text != "I")
+                    if (ddl_insert_status.Text != "A" && ddl_insert_status.Text != "I")
                     {
                         throw new Exception("Status Flag can only be A (Active) or I (Inactive)");
                     }
@@ -725,7 +732,7 @@ namespace CDAS
                             cmd.Parameters.AddWithValue("@panel", tb_insert_panel.Text.Trim());
                             cmd.Parameters.AddWithValue("@full_name", tb_insert_full_name.Text.Trim());
                             cmd.Parameters.AddWithValue("@abbrv_name", tb_insert_abbrv_name.Text.Trim());
-                            cmd.Parameters.AddWithValue("@status_flag", tb_insert_status.Text.Trim());
+                            cmd.Parameters.AddWithValue("@status_flag", ddl_insert_status.Text.Trim());
                             cmd.Parameters.AddWithValue("@changed_by", "STEPHET");
                             cmd.Parameters.AddWithValue("@changed_date", DateTime.Now);
                             #endregion
@@ -755,7 +762,7 @@ namespace CDAS
                             cmd.Parameters.AddWithValue("@code", tb_insert_code.Text.Trim());
                             cmd.Parameters.AddWithValue("@full_name", tb_insert_full_name.Text.Trim());
                             cmd.Parameters.AddWithValue("@abbrv_name", tb_insert_abbrv_name.Text.Trim());
-                            cmd.Parameters.AddWithValue("@status_flag", tb_insert_status.Text.Trim());
+                            cmd.Parameters.AddWithValue("@status_flag", ddl_insert_status.Text.Trim());
                             cmd.Parameters.AddWithValue("@changed_by", "STEPHET");
                             cmd.Parameters.AddWithValue("@changed_date", DateTime.Now);
                             #endregion
