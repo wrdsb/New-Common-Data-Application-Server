@@ -17,10 +17,22 @@ namespace CDAS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
+            if (Session["access_type"] == null)
             {
-                sds_school_type.SelectCommand = "select panel, ABBRV_NAME from [CDAS].[CDDBA].[EC_PANEL] order by ABBRV_NAME";
-                ddl_panel_type.DataBind();
+                Response.Redirect("login.aspx");
+            }
+
+            if (Session["access_type"].ToString() == "ADMIN")
+            {
+                if (!IsPostBack)
+                {
+                    sds_school_type.SelectCommand = "select panel, ABBRV_NAME from [CDAS].[CDDBA].[EC_PANEL] order by ABBRV_NAME";
+                    ddl_panel_type.DataBind();
+                }
+            }
+            else
+            {
+                Response.Redirect("login.aspx");
             }
         }
 

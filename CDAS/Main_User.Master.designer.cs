@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Security_Card_System
+namespace CDAS
 {
 
 

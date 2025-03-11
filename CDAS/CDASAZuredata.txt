@@ -1,0 +1,6 @@
+Display NAme: CDAS
+Application ID: a7d90ded-293e-417d-9e1c-3c7d9b8cae75
+Object ID: c2067d14-0dde-4ed0-9a58-3ce3b5b31d7f
+Directory (tenant) ID: cd25c694-bfb8-48f4-9d0d-b9af282c4ab4
+
+Sunny pass: t5v1l6m5exbh

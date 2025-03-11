@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Security_Card_System
+namespace CDAS
 {
     public partial class Login : System.Web.UI.MasterPage
     {

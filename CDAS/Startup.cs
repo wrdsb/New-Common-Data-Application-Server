@@ -1,9 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Security_Card_System.Startup))]
+[assembly: OwinStartupAttribute(typeof(CDAS.Startup))]
 
-namespace Security_Card_System
+namespace CDAS
 {
     public partial class Startup
     {

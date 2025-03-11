@@ -17,10 +17,23 @@ namespace CDAS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
+            if (Session["access_type"] == null)
             {
-                BindGrids();
+                Response.Redirect("login.aspx");
             }
+
+            if (Session["access_type"].ToString() == "ADMIN")
+            {
+                if (!IsPostBack)
+                {
+                    BindGrids();
+                }
+            }
+            else
+            {
+                Response.Redirect("login.aspx");
+            }
+            
         }
 
         private void BindListView(string query, string sort)

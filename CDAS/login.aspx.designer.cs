@@ -24,6 +24,33 @@ namespace CDAS
         protected global::System.Web.UI.HtmlControls.HtmlForm loginform;
 
         /// <summary>
+        /// tb_username control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tb_username;
+
+        /// <summary>
+        /// tb_password control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tb_password;
+
+        /// <summary>
+        /// loginErrors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl loginErrors;
+
+        /// <summary>
         /// btn_login control.
         /// </summary>
         /// <remarks>

@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main_User.Master.cs" Inherits="Security_Card_System.Main_User" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main_User.Master.cs" Inherits="CDAS.Main_User" %>
 
 <!DOCTYPE html>
 
@@ -71,7 +71,7 @@
                     Logged in as: 
                     <asp:Label ID="lbl_username" runat="server" style="font-weight: bold;"></asp:Label>&nbsp;&nbsp;|&nbsp;
                     <asp:Label ID="lbl_location" runat="server" style="font-weight: bold;"></asp:Label>&nbsp;&nbsp;|
-                    <asp:LinkButton ID="lb_logout" runat="server" Text="Logout"></asp:LinkButton>
+                    <asp:LinkButton ID="lb_logout" runat="server" Text="Logout" OnClick="lb_logout_Click"></asp:LinkButton>
                 </div>
             </div>
         </div>
