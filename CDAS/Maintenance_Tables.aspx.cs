@@ -19,7 +19,8 @@ namespace CDAS
         {
             if (Session["access_type"] == null)
             {
-                Response.Redirect("login.aspx");
+                Response.Redirect("default.aspx", false);
+                return;
             }
 
             if (Session["access_type"].ToString() == "ADMIN")
@@ -31,7 +32,8 @@ namespace CDAS
             }
             else
             {
-                Response.Redirect("login.aspx");
+                Response.Redirect("default.aspx", false);
+                return;
             }
             
         }
@@ -162,7 +164,7 @@ namespace CDAS
             string connstring = ConfigurationManager.ConnectionStrings["DB_CDAS"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connstring))
             {
-                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_LOCATION_TYPE] order by CODE ASC", connstring))
+                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_LOCATION_TYPE] where status_flag = 'A' order by CODE ASC", connstring))
                 {
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
@@ -170,7 +172,7 @@ namespace CDAS
                     gv_location_type.DataBind();
                 }
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_SCHOOL_TYPE] order by CODE ASC", connstring))
+                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_SCHOOL_TYPE] where status_flag = 'A'  order by CODE ASC", connstring))
                 {
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
@@ -178,7 +180,7 @@ namespace CDAS
                     gv_school_type.DataBind();
                 }
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_PANEL] order by PANEL ASC", connstring))
+                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_PANEL] where status_flag = 'A'  order by PANEL ASC", connstring))
                 {
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
@@ -186,7 +188,7 @@ namespace CDAS
                     gv_panel.DataBind();
                 }
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_ADMIN_AREA] order by CODE ASC", connstring))
+                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_ADMIN_AREA] where status_flag = 'A'  order by CODE ASC", connstring))
                 {
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
@@ -430,7 +432,7 @@ namespace CDAS
             string code = gv_admin_area.DataKeys[e.RowIndex].Value.ToString();
             string full_name = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[2].Controls[0]).Text.Trim();
             string abbrv_name = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[3].Controls[0]).Text.Trim();
-            DropDownList ddl_status_flag = (DropDownList)gv_panel.Rows[e.RowIndex].Cells[4].FindControl("ddl_status_flag") as DropDownList;
+            DropDownList ddl_status_flag = (DropDownList)gv_admin_area.Rows[e.RowIndex].Cells[4].FindControl("ddl_status_flag");
             string status_flag = ddl_status_flag.SelectedValue;
             string employee_id = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[7].Controls[0]).Text.Trim();
             
@@ -504,11 +506,13 @@ namespace CDAS
 
         protected void ddl_maintenance_tables_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List <Control> insert_controls = new List<Control> { lbl_insert, lbl_insert_code, tb_insert_code, lbl_insert_full_name , tb_insert_full_name, lbl_insert_abbrv_name, tb_insert_abbrv_name, lbl_insert_status, ddl_insert_status}; 
+            List <Control> insert_controls = new List<Control> {lbl_insert, lbl_insert_code, tb_insert_code, lbl_insert_full_name , tb_insert_full_name, lbl_insert_abbrv_name, tb_insert_abbrv_name, lbl_insert_status, ddl_insert_status}; 
             List<Label> admin_label = new List<Label> { lbl_insert_employee_ID};
             List<TextBox> admin_textbox = new List<TextBox> { tb_insert_employee_ID };
+
             //Each time the drop down is used clear the main tables. We can assume the null value is just a full clear
             GridClear();
+
             foreach (Label label in admin_label)
             {
                 label.Visible = false;
@@ -517,7 +521,13 @@ namespace CDAS
             {
                 text.Visible = false;
             }
+            lbl_error_message.Text = "";
+            tb_insert_panel.Text = "";
+            tb_insert_employee_ID.Text = "";
+            ddl_insert_status.SelectedIndex = 0;
+
             btn_insert_maint_table.Visible = true;
+            btn_clear.Visible = true;
             if (ddl_maintenance_tables.SelectedValue == "LocationType")
             {
                 gv_location_type.Visible = true;
@@ -529,6 +539,7 @@ namespace CDAS
                 }
                 lbl_insert_code.Visible = true;
                 tb_insert_code.Visible = true;
+                gv_location_type.PageIndex = 0;
             }
             else if (ddl_maintenance_tables.SelectedValue == "SchoolType")
             {
@@ -541,6 +552,7 @@ namespace CDAS
                 lbl_insert_panel.Visible = false;
                 lbl_insert_code.Visible = true;
                 tb_insert_code.Visible = true;
+                gv_school_type.PageIndex = 0;
             }
             else if (ddl_maintenance_tables.SelectedValue == "Panel")
             {
@@ -549,6 +561,7 @@ namespace CDAS
                     control.Visible = true;
                 }
                 gv_panel.Visible = true;
+                gv_panel.PageIndex = 0;
                 tb_insert_panel.Visible = true;
                 lbl_insert_panel.Visible = true;
                 lbl_insert_code.Visible = false;
@@ -570,6 +583,7 @@ namespace CDAS
                 {
                     text.Visible = true;
                 }
+                gv_admin_area.PageIndex = 0;
                 tb_insert_panel.Visible = false;
                 lbl_insert_panel.Visible = false;
                 lbl_insert_code.Visible = true;
@@ -593,9 +607,12 @@ namespace CDAS
                 tb_insert_panel.Visible = false;
                 lbl_insert_panel.Visible = false;
                 btn_insert_maint_table.Visible = false;
+                btn_clear.Visible = false;
             }
 
             lbl_error_message.Text = "";
+            Insert_Clear();
+            BindGrids();
         }
         
         protected void GridClear()
@@ -605,7 +622,12 @@ namespace CDAS
             foreach (GridView grid in gridview_selection)
             {
                 grid.Visible = false;
+                if (grid.EditIndex != -1)
+                {
+                    grid.EditIndex = -1;
+                }
             }
+            BindGrids();
         }
 
         protected void btn_insert_maint_table_Click(object sender, EventArgs e)
@@ -615,7 +637,9 @@ namespace CDAS
             SqlCommand cmd = null;
             SqlDataReader reader;
             string query, selected_table;
-            List<TextBox> admin_textbox = new List<TextBox> { tb_insert_employee_ID, tb_insert_full_name, tb_insert_abbrv_name, tb_insert_code };
+            List<TextBox> admin_textbox = new List<TextBox> {tb_insert_employee_ID, tb_insert_full_name, tb_insert_abbrv_name, tb_insert_code };
+            TextBox panel_textbox = tb_insert_panel;
+
             try
             {
 
@@ -656,7 +680,7 @@ namespace CDAS
                     }
 
                     query = "INSERT INTO [CDAS].[CDDBA].[EC_ADMIN_AREA] (code, full_name, abbrv_name, status_flag, changed_by, changed_date, employee_id) " +
-                                "VALUES (@code, @full_name, @abbrv_name, @status_flag, @changed_by, @changed_date, @employee_ID";
+                                "VALUES (@code, @full_name, @abbrv_name, @status_flag, @changed_by, @changed_date, @employee_ID)";
 
                     using (cmd = new SqlCommand(query, conn))
                     {
@@ -793,8 +817,10 @@ namespace CDAS
                     text.Text = "";                    
                 }
                 lbl_error_message.ForeColor = System.Drawing.Color.Black;
-                lbl_error_message.Text = "Create Successful";
+                lbl_error_message.Text = "Create Successful!";
 
+                //Clear all
+                Insert_Clear();
             }
             catch (Exception ex) 
             {
@@ -802,6 +828,46 @@ namespace CDAS
                 lbl_error_message.Text = ex.Message;
             }
             
+        }
+
+        protected void Insert_Clear()
+        {
+            List<TextBox> insert_parameters = new List<TextBox> { tb_insert_code, tb_insert_panel, tb_insert_full_name, tb_insert_abbrv_name, tb_insert_employee_ID };
+
+            foreach(TextBox text in  insert_parameters) 
+            {
+                text.Text = "";
+            }
+            ddl_insert_status.SelectedIndex = 0;
+        }
+
+        protected void gv_location_type_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gv_location_type.PageIndex = e.NewPageIndex;
+            BindGrids();
+        }
+
+        protected void gv_school_type_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gv_school_type.PageIndex = e.NewPageIndex;
+            BindGrids();
+        }
+
+        protected void gv_panel_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gv_panel.PageIndex = e.NewPageIndex;
+            BindGrids();
+        }
+
+        protected void gv_admin_area_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gv_admin_area.PageIndex = e.NewPageIndex;
+            BindGrids();
+        }
+
+        protected void btn_clear_Click(object sender, EventArgs e)
+        {
+            Insert_Clear();
         }
     }
 }

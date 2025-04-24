@@ -57,6 +57,7 @@
 </head>
 <body id="top">
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <div id="site-wide-navigation" style="height:40px;">
 
             <!-- persistent global navigation -->

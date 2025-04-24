@@ -78,15 +78,6 @@ namespace CDAS
         protected global::System.Web.UI.WebControls.DropDownList ddl_maintenance_tables;
 
         /// <summary>
-        /// lbl_error_message control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_error_message;
-
-        /// <summary>
         /// lbl_insert control.
         /// </summary>
         /// <remarks>
@@ -94,6 +85,15 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbl_insert;
+
+        /// <summary>
+        /// tbl_insertion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table tbl_insertion;
 
         /// <summary>
         /// lbl_insert_code control.
@@ -105,15 +105,6 @@ namespace CDAS
         protected global::System.Web.UI.WebControls.Label lbl_insert_code;
 
         /// <summary>
-        /// tb_insert_code control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_insert_code;
-
-        /// <summary>
         /// lbl_insert_panel control.
         /// </summary>
         /// <remarks>
@@ -121,6 +112,15 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbl_insert_panel;
+
+        /// <summary>
+        /// tb_insert_code control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tb_insert_code;
 
         /// <summary>
         /// tb_insert_panel control.
@@ -211,6 +211,33 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btn_insert_maint_table;
+
+        /// <summary>
+        /// btn_clear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_clear;
+
+        /// <summary>
+        /// pnl_tables control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnl_tables;
+
+        /// <summary>
+        /// lbl_error_message control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_error_message;
 
         /// <summary>
         /// gv_location_type control.

@@ -15,6 +15,15 @@ namespace CDAS
     {
 
         /// <summary>
+        /// Panel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel1;
+
+        /// <summary>
         /// lbl_search control.
         /// </summary>
         /// <remarks>
@@ -69,15 +78,6 @@ namespace CDAS
         protected global::System.Web.UI.WebControls.LinkButton lb_search;
 
         /// <summary>
-        /// lb_clear control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lb_clear;
-
-        /// <summary>
         /// lb_insert control.
         /// </summary>
         /// <remarks>
@@ -85,6 +85,15 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lb_insert;
+
+        /// <summary>
+        /// lbl_record_count control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_record_count;
 
         /// <summary>
         /// lv_maint control.

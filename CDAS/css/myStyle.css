@@ -28,3 +28,12 @@ td:hover {
 .customLabel label {
     font-weight:normal;
 }
+
+.grid-border td, .grid-border th {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.grid-border {
+    border-collapse: collapse;
+}

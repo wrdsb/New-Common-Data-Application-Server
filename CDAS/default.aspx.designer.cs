@@ -51,13 +51,13 @@ namespace CDAS
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl loginErrors;
 
         /// <summary>
-        /// btn_login control.
+        /// btn_login_maint control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_login;
+        protected global::System.Web.UI.WebControls.Button btn_login_maint;
 
         /// <summary>
         /// lbl_message control.

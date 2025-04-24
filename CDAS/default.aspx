@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Login.Master" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="CDAS.login" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Login.Master" AutoEventWireup="true" CodeBehind="default.aspx.cs" Inherits="CDAS.login" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -13,18 +13,17 @@
                 <fieldset>
                     
                     <!-- Username -->
-                    <label for="tb_username">Username</label>
+                    <label ID="lbl_username">Username</label>
                     <asp:TextBox ID="tb_username" runat="server"></asp:TextBox>
 
                     <!-- Password -->
-                    <label for="tb_password">Password</label>
+                    <label ID="lbl_password">Password</label>
                     <asp:TextBox ID="tb_password" runat="server" TextMode="Password"></asp:TextBox>
                     <p><a href="https://mypassword.wrdsb.ca/" target="_blank">Forgot your Password?</a></p>
                     <div class="alert alert-danger" role="alert" id="loginErrors" runat="server" visible="False"></div>
                     
                     <!-- Submit Form -->
-                    <asp:Button ID="btn_login" runat="server" Text="Login" OnClick="btn_login_Click" />
-                        
+                    <asp:Button ID="btn_login_maint" runat="server" Text="Login" OnClick="btn_login_maint_Click"/>
                 </fieldset>
                 <p>
                     <asp:Label ID="lbl_message" runat="server"></asp:Label>
