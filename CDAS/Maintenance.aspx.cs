@@ -14,6 +14,7 @@ using System.Text;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using Azure.Core;
 using Microsoft.Owin.Security.OpenIdConnect;
+using System.Drawing;
 
 namespace CDAS
 {
@@ -21,30 +22,14 @@ namespace CDAS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            if (Session["access_type"] == null)
-            {
-                Response.Redirect("~/default.aspx", false);
-                return;
-            }
 
-            if (Session["access_type"].ToString() == "ADMIN")
+            if(!Request.IsAuthenticated && !Request.Path.Contains("signin-oidc"))
             {
-                if (!IsPostBack)
-                {
-                    sds_school_type.SelectCommand = "select panel, ABBRV_NAME from [CDAS].[CDDBA].[EC_PANEL] where status_flag = 'a' order by ABBRV_NAME";
-                    ddl_panel_type.DataBind();
-                }
-                
+                Response.Redirect("default.aspx", false);
+                return;
+
             }
             else
-            {
-                Response.Redirect("~/default.aspx", false);
-                return;
-            }
-            
-            /*
-            if(Request.IsAuthenticated)
             {
                 if (!IsPostBack)
                 {
@@ -52,13 +37,7 @@ namespace CDAS
                     ddl_panel_type.DataBind();
                 }
             }
-            else
-            {
-                HttpContext.Current.GetOwinContext().Authentication.Challenge(
-                    new Microsoft.Owin.Security.AuthenticationProperties { RedirectUri = "/default.aspx" },
-                    OpenIdConnectAuthenticationDefaults.AuthenticationType);
-            }
-            */
+            
         }
 
         private void BindListView(string query, string sort)
@@ -121,24 +100,26 @@ namespace CDAS
                 //Theres values in atleast 1 of the 2 textboxes
                 if (!string.IsNullOrEmpty(search_code))
                 {
-                    query = string.Format("select * from [CDAS].[dbo].[hd_ec_locations] where location_code LIKE '%{0}%' ", search_code);
-
+                    query = string.Format("select * from [CDAS].[dbo].[hd_ec_locations] where ( location_code LIKE '%{0}%' OR alternate_location_code LIKE '%{0}%' OR school_code LIKE '%{0}%' ) ", search_code);
+                    
                     if (!string.IsNullOrEmpty(search_description))
                     {
-                        query += string.Format("AND description_text LIKE '%{0}%'", search_description);
-                        query += string.Format(" OR description_abbr LIKE '%{0}%'", search_description);
+                        query += string.Format("AND (description_text LIKE '%{0}%'", search_description);
+                        query += string.Format(" OR description_abbr LIKE '%{0}%')", search_description);
                     }
                 }
                 else
                 {
-                    query = string.Format("select * from [CDAS].[dbo].[hd_ec_locations] where description_text LIKE '%{0}%' ", search_description);
-                    query += string.Format(" OR description_abbr LIKE '%{0}%'", search_description);
+                    query = string.Format("select * from [CDAS].[dbo].[hd_ec_locations] where (description_text LIKE '%{0}%' ", search_description);
+                    query += string.Format(" OR description_abbr LIKE '%{0}%')", search_description);
                 }
                 
                 if (ddl_panel_type.SelectedValue != "ALL")
                 {
                     query += " AND PANEL = '" + ddl_panel_type.SelectedValue + "'";
                 }
+
+                query += " AND record_status ='A'";
             }
 
             ViewState["query"] = query;
@@ -204,6 +185,10 @@ namespace CDAS
 
                 }
             }
+            //Debug
+            //lbl_record_count.Text = ViewState["query"].ToString();
+            //
+
             tb_search_code.Text = string.Empty;
             tb_search_description.Text = string.Empty;
             BindListView(ViewState["query"].ToString(), ViewState["sort_expression"].ToString());
@@ -339,7 +324,7 @@ namespace CDAS
             if (e.CommandName == "Modify")
                 {
                     string null_check;
-                    List<TextBox> text_box_null_check = new List<TextBox> { tb_telephone_area, tb_telephone_extension, tb_telephone_number, tb_fax_area, tb_fax_number, tb_speed_dial_number};
+                    List<TextBox> text_box_null_check = new List<TextBox> { tb_telephone_area, tb_telephone_number, tb_fax_area, tb_fax_number};
                     List<TextBox> non_null_text_box = new List<TextBox> { };
                     
                     foreach (TextBox textbox in text_box_null_check)
@@ -427,10 +412,12 @@ namespace CDAS
                         {
                             throw new Exception("Telephone Number must only be " + tb_telephone_number.MaxLength + " digits");
                         }
+                        /*
                         if (tb_telephone_extension.Text.Length != tb_telephone_extension.MaxLength)
                         {
-                            throw new Exception("Location Code must only be " + tb_telephone_extension.MaxLength + " digits");
+                            throw new Exception("Telephone extension must only be " + tb_telephone_extension.MaxLength + " digits");
                         }
+                        */
                         if (tb_fax_area.Text.Length != tb_fax_area.MaxLength)
                         {
                             throw new Exception("Fax Area must only be " + tb_fax_area.MaxLength + " digits");
@@ -439,10 +426,12 @@ namespace CDAS
                         {
                             throw new Exception("Fax Number must only be " + tb_fax_number.MaxLength + " digits");
                         }
+                        /*
                         if (tb_speed_dial_number.Text.Length != tb_speed_dial_number.MaxLength)
                         {
                             throw new Exception("Speed dial number must only be " + tb_speed_dial_number.MaxLength + " digits");
                         }
+                        */
                     }
                     else
                     {
@@ -678,10 +667,10 @@ namespace CDAS
                                 {
                                     throw new Exception("Telephone Number must only be " + tb_telephone_number_insert.MaxLength + " digits");
                                 }
-                                if (tb_telephone_extension_insert.Text.Length != tb_telephone_extension_insert.MaxLength)
-                                {
-                                    throw new Exception("Location Code must only be " + tb_telephone_extension_insert.MaxLength + " digits");
-                                }
+                                //if (tb_telephone_extension_insert.Text.Length != tb_telephone_extension_insert.MaxLength)
+                                //{
+                                //    throw new Exception("Telephone Extension must only be " + tb_telephone_extension_insert.MaxLength + " digits");
+                                //}
                                 if (tb_fax_area_insert.Text.Length != tb_fax_area_insert.MaxLength)
                                 {
                                     throw new Exception("Fax Area must only be " + tb_fax_area_insert.MaxLength + " digits");
@@ -690,24 +679,26 @@ namespace CDAS
                                 {
                                     throw new Exception("Fax Number must only be " + tb_fax_number_insert.MaxLength + " digits");
                                 }
+                                /*
                                 if (tb_speed_dial_number_insert.Text.Length != tb_speed_dial_number_insert.MaxLength)
                                 {
                                     throw new Exception("Speed dial number must only be " + tb_speed_dial_number_insert.MaxLength + " digits");
                                 }
+                                */
                             }
-
+                            
                             query = "INSERT INTO [CDAS].[dbo].[hd_ec_locations] (location_code, location_area, location_type, mident, description_text, description_abbr, street_1, street_2, city, province, " +
-                                    "postal_code, telephone_area, telephone_no, telephone_ext, geographic_area_code, onsis_location_type, record_status, alternate_location_code, speed_dial_number, fax_area, fax_no, panel, school_code) " +
+                                    "postal_code, telephone_area, telephone_no, telephone_ext, geographic_area_code, onsis_location_type, record_status, alternate_location_code, speed_dial_number, fax_area, fax_no, panel, school_code, fr_immersion) " +
                                     "VALUES (@location_code, @location_area, @location_type, @mident, @description_text, @description_abbr, @street_1, @street_2, @city, @province, " +
-                                    " @postal_code, @telephone_area, @telephone_no, @telephone_ext, @geographic_area_code, @onsis_location_type, @record_status, @alternate_location_code, @speed_dial_number, @fax_area, @fax_no, @panel, @school_code)";
+                                    " @postal_code, @telephone_area, @telephone_no, @telephone_ext, @geographic_area_code, @onsis_location_type, @record_status, @alternate_location_code, @speed_dial_number, @fax_area, @fax_no, @panel, @school_code, @fr_immersion)";
 
                             using (cmd = new SqlCommand(query, conn))
                             {
                                 #region Edit Parameters
                                 cmd.Parameters.AddWithValue("@alternate_location_code", tb_alternate_location_code_insert.Text.Trim());
-                                cmd.Parameters.AddWithValue("@location_area", ddl_location_area_insert.SelectedValue);
-                                cmd.Parameters.AddWithValue("@location_type", ddl_location_type_insert.SelectedValue);
-                                cmd.Parameters.AddWithValue("@onsis_location_type", ddl_onsis_location_type_insert.SelectedValue);
+                                cmd.Parameters.AddWithValue("@location_area", ddl_location_area_insert.SelectedValue.Trim());
+                                cmd.Parameters.AddWithValue("@location_type", ddl_location_type_insert.SelectedValue.Trim());
+                                cmd.Parameters.AddWithValue("@onsis_location_type", ddl_onsis_location_type_insert.SelectedValue.Trim());
                                 cmd.Parameters.AddWithValue("@description_text", tb_description_text_insert.Text.Trim());
                                 cmd.Parameters.AddWithValue("@description_abbr", tb_description_abbr_insert.Text.Trim());
                                 cmd.Parameters.AddWithValue("@street_1", tb_street_1_insert.Text.Trim());
@@ -720,15 +711,16 @@ namespace CDAS
                                 cmd.Parameters.AddWithValue("@telephone_area", tb_telephone_area_insert.Text.Trim());
                                 cmd.Parameters.AddWithValue("@telephone_no", tb_telephone_number_insert.Text.Trim());
                                 cmd.Parameters.AddWithValue("@telephone_ext", tb_telephone_extension_insert.Text.Trim());
-                                cmd.Parameters.AddWithValue("@geographic_area_code", ddl_geographic_area_code_insert.SelectedValue);
+                                cmd.Parameters.AddWithValue("@geographic_area_code", ddl_geographic_area_code_insert.SelectedValue.Trim());
                                 cmd.Parameters.AddWithValue("@speed_dial_number", tb_speed_dial_number_insert.Text.Trim());
                                 cmd.Parameters.AddWithValue("@fax_area", tb_fax_area_insert.Text.Trim());
                                 cmd.Parameters.AddWithValue("@fax_no", tb_fax_number_insert.Text.Trim());
                                 cmd.Parameters.AddWithValue("@school_code", tb_school_code_insert.Text.Trim());
 
-                                cmd.Parameters.AddWithValue("@record_status", ddl_record_status_insert.SelectedValue);
-                                cmd.Parameters.AddWithValue("@panel", ddl_panel_insert.SelectedValue);
+                                cmd.Parameters.AddWithValue("@record_status", ddl_record_status_insert.SelectedValue.Trim());
+                                cmd.Parameters.AddWithValue("@panel", ddl_panel_insert.SelectedValue.Trim());
                                 cmd.Parameters.AddWithValue("@location_code", tb_location_code_insert.Text.Trim());
+                                cmd.Parameters.AddWithValue("@fr_immersion", "FI:");
                                 #endregion
 
                                 //conn.Open();
@@ -736,7 +728,29 @@ namespace CDAS
                                 conn.Close();
                             }
 
+
+                            /*
+                            query = string.Format("INSERT INTO [CDAS].[dbo].[hd_ec_locations] (location_code, location_area, location_type, mident, description_text, description_abbr, street_1, street_2, city, province, " +
+                                    "postal_code, telephone_area, telephone_no, telephone_ext, geographic_area_code, onsis_location_type, record_status, alternate_location_code, speed_dial_number, fax_area, fax_no, panel, school_code, fr_immersion) " +
+                                    " values ('007', '7', 'CL', '111000', 'Debug', 'Dbg', 'Street Test', ' ', 'Test City', 'Test Prov', 'TS2 1H1', '555', '1234567', ' ', 'WAT', 'J', 'A', ' ', '555', ' ', ' ', 'J', '010101', ' ');");
+                            */
+                            /*
+                            query = string.Format("INSERT INTO [CDAS].[dbo].[hd_ec_locations] (location_code, location_area, location_type, mident, description_text, description_abbr, street_1, street_2, city, province, " +
+                                    "postal_code, telephone_area, telephone_no, telephone_ext, geographic_area_code, onsis_location_type, record_status, alternate_location_code, speed_dial_number, fax_area, fax_no, panel, school_code, fr_immersion) " +
+                                    " values ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}', '{21}', '{22}', '{23}');"
+                                    , tb_location_code_insert.Text.Trim(), ddl_location_area_insert.SelectedValue.Trim(), ddl_location_type_insert.SelectedValue.Trim(), tb_mident_text_insert.Text.Trim(), tb_description_text_insert.Text.Trim(), tb_description_abbr_insert.Text.Trim(), tb_street_1_insert.Text.Trim(),
+                                    tb_street_2_insert.Text.Trim(), tb_city_insert.Text.Trim(), tb_province_insert.Text.Trim(), tb_postal_code_insert.Text.Trim(), tb_telephone_area_insert.Text.Trim(), tb_telephone_number_insert.Text.Trim(), tb_telephone_extension_insert.Text.Trim(), ddl_geographic_area_code_insert.Text.Trim(),
+                                    ddl_onsis_location_type_insert.Text.Trim(), ddl_record_status_insert.Text.Trim(), tb_alternate_location_code_insert.Text.Trim(), tb_speed_dial_number_insert.Text.Trim(), tb_fax_area_insert.Text.Trim(), tb_fax_number_insert.Text.Trim(), ddl_panel_insert.Text.Trim(), tb_school_code_insert.Text.Trim(), "");
+                            
+                            cmd = new SqlCommand(query, conn);
+                            reader = cmd.ExecuteReader();
+                            reader.Close();
+                            conn.Close();
+                            */
+                            lbl_message_insert_insert.ForeColor = System.Drawing.Color.Black;
                             lbl_message_insert.Text = "Record Successfully Added";
+                            ClearInsert(lv_maint.InsertItem);
+                            
                         }
                     }
                     conn.Close();
@@ -777,6 +791,27 @@ namespace CDAS
 
         }
 
+        void ClearInsert(Control listView)
+        {
+            foreach (Control c in listView.Controls)
+            {
+                if (c is TextBox text)
+                {
+                    text.Text = string.Empty;
+                }
+                else if (c is DropDownList drop)
+                {
+                    if (drop.Items.Count > 0)
+                    {
+                        drop.SelectedIndex = 0;
+                    }
+                }
+                else if (c.HasControls())
+                {
+                    ClearInsert(c);
+                }
+            }
+        }
         bool Check_For_Text(List<TextBox> list_textboxes)
         {
             bool valid = true;
@@ -817,10 +852,12 @@ namespace CDAS
             TextBox tb_speed_dial_number = (TextBox)e.Item.FindControl("tb_speed_dial_number");
             Label lbl_location_code = (Label)e.Item.FindControl("lbl_location_code");
             Label lbl_message = (Label)e.Item.FindControl("lbl_message");
+            Label lbl_telephone = (Label)e.Item.FindControl("lbl_telephone");
+            Label lbl_fax_area = (Label)e.Item.FindControl("lbl_fax_area");
             //DropDownList ddl_onsis_location_type = (DropDownList)e.Item.FindControl("ddl_onsis_location_type");
             #endregion
 
-            
+
             if (e.Item.ItemType == ListViewItemType.DataItem && (e.Item as ListViewDataItem).DisplayIndex == lv_maint.EditIndex)
             {
                 DropDownList ddl_panel = (DropDownList)e.Item.FindControl("ddl_panel");
@@ -952,6 +989,12 @@ namespace CDAS
                         ddl_location_type.Items.Insert(0, new ListItem(raw_value, raw_value));
                         ddl_location_type.SelectedIndex = 0;
                     }
+
+                    if (ddl_location_type.SelectedValue == "SC")
+                    {
+                        lbl_telephone.Text = "Phone: *(";
+                        lbl_fax_area.Text = "Fax: *(";
+                    }
                 }
 
                 raw_value = current_row["location_area"] == DBNull.Value ? null : current_row["location_area"].ToString();
@@ -977,9 +1020,7 @@ namespace CDAS
                     }
                 }
                 
-            }
-
-
+            }     
             BindListView(ViewState["query"].ToString(), ViewState["sort_expression"].ToString());
         }
 
@@ -1163,7 +1204,6 @@ namespace CDAS
                     Label lbl_alternate_location_code = (Label)item.FindControl("lbl_alternate_location_code");
                     Label lbl_telephone = (Label)item.FindControl("lbl_telephone");
                     Label lbl_fax_area = (Label)item.FindControl("lbl_fax_area");
-                    Label lbl_speed_dial_number = (Label)item.FindControl("lbl_speed_dial_number");
                     Label lbl_telephone_extension = (Label)item.FindControl("lbl_telephone_extension");
 
                     if (ddl_location_type.SelectedValue == "SC")
@@ -1171,15 +1211,13 @@ namespace CDAS
                         lbl_alternate_location_code.Text = "Alternate Location Code:  ";
                         lbl_telephone.Text = "Phone: *(";
                         lbl_fax_area.Text = "Fax: *(";
-                        lbl_speed_dial_number.Text = "Speed Dial Number:*";
-                        lbl_telephone_extension.Text = "Extension:*";
+                        lbl_telephone_extension.Text = "Extension: ";
                     }
                     else
                     {
                         lbl_alternate_location_code.Text = "Alternate Location Code:  ";
                         lbl_telephone.Text = "Phone:  (";
                         lbl_fax_area.Text = "Fax:  (";
-                        lbl_speed_dial_number.Text = "Speed Dial Number: ";
                         lbl_telephone_extension.Text = "Extension: ";
                     }
                 }
@@ -1198,15 +1236,15 @@ namespace CDAS
                 Label lbl_telephone = (Label)item.FindControl("lbl_telephone_insert");
                 Label lbl_fax_area = (Label)item.FindControl("lbl_fax_area_insert");
                 Label lbl_speed_dial_number = (Label)item.FindControl("lbl_speed_dial_number_insert");
-                Label lbl_telephone_extension = (Label)item.FindControl("lbl_speed_dial_number_insert");
+                Label lbl_telephone_extension = (Label)item.FindControl("lbl_telephone_extension_insert");
 
                 if (ddl_location_type_insert.SelectedValue == "SC")
                 {
                     lbl_alternate_location_code.Text = "Alternate Location Code:  ";
                     lbl_telephone.Text = "Phone: *(";
                     lbl_fax_area.Text = "Fax: *(";
-                    lbl_speed_dial_number.Text = "Speed Dial Number:*";
-                    lbl_telephone_extension.Text = "Extension:*";
+                    lbl_speed_dial_number.Text = "Speed Dial Number: ";
+                    lbl_telephone_extension.Text = "Extension: ";
                 }
                 else
                 {

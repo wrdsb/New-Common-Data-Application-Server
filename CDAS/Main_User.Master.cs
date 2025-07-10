@@ -24,11 +24,17 @@ namespace CDAS
             HttpContext.Current.GetOwinContext().Authentication.SignOut(
                 OpenIdConnectAuthenticationDefaults.AuthenticationType,
                 CookieAuthenticationDefaults.AuthenticationType);
+            Session.Clear();
+            Session.Abandon();
+            Session.RemoveAll();
+
+            FormsAuthentication.SignOut();
+            FormsAuthentication.RedirectToLoginPage();
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            /*
             if (Session["access_type"] != null)
             {
                 if (!IsPostBack)
@@ -40,17 +46,27 @@ namespace CDAS
                     }
                 }
             }
-            /*
-            if (Page.User.Identity.IsAuthenticated)
+            */
+            try
             {
-                lbl_username.Text = Context.User.Identity.Name;
-                lbl_username2.Text = Context.User.Identity.Name;
-
-                if (Session["location_desc"] != null)
+                if (Page.User.Identity.IsAuthenticated)
                 {
-                    lbl_location.Text = Session["location_desc"].ToString() + " (" + Session["school_code"].ToString() + ")";
-                    //lbl_groups.Text = Session["sub_job_description"].ToString();
-                    //lbl_version.Text = System.Configuration.ConfigurationManager.AppSettings["version"].ToString();
+
+                    lbl_username.Text = Session["username"].ToString();
+
+                    if (Session["email"] != null)
+                    {
+                        lbl_location.Text = Session["location_desc"].ToString() + " (" + Session["school_code"].ToString() + ")";
+                    }
+                    else
+                    {
+                        Session.Clear();
+                        Session.Abandon();
+                        Session.RemoveAll();
+
+                        FormsAuthentication.SignOut();
+                        FormsAuthentication.RedirectToLoginPage();
+                    }
                 }
                 else
                 {
@@ -62,7 +78,7 @@ namespace CDAS
                     FormsAuthentication.RedirectToLoginPage();
                 }
             }
-            else
+            catch 
             {
                 Session.Clear();
                 Session.Abandon();
@@ -71,7 +87,6 @@ namespace CDAS
                 FormsAuthentication.SignOut();
                 FormsAuthentication.RedirectToLoginPage();
             }
-            */
         }
             /*
     protected void Page_Load(object sender, EventArgs e)

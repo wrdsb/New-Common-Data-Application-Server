@@ -60,24 +60,6 @@ namespace CDAS
         protected global::System.Web.UI.WebControls.SqlDataSource sds_school_type;
 
         /// <summary>
-        /// lbl_maintenance_tables control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_maintenance_tables;
-
-        /// <summary>
-        /// ddl_maintenance_tables control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_maintenance_tables;
-
-        /// <summary>
         /// lbl_insert control.
         /// </summary>
         /// <remarks>
@@ -94,6 +76,24 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Table tbl_insertion;
+
+        /// <summary>
+        /// lbl_maintenance_tables control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_maintenance_tables;
+
+        /// <summary>
+        /// ddl_maintenance_tables control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_maintenance_tables;
 
         /// <summary>
         /// lbl_insert_code control.

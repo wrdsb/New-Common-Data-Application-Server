@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Web.Services.Description;
 using System.Collections;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace CDAS
 {
@@ -17,25 +18,19 @@ namespace CDAS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["access_type"] == null)
+            if (!Request.IsAuthenticated && !Request.Path.Contains("signin-oidc"))
             {
                 Response.Redirect("default.aspx", false);
                 return;
-            }
 
-            if (Session["access_type"].ToString() == "ADMIN")
+            }
+            else
             {
                 if (!IsPostBack)
                 {
                     BindGrids();
                 }
             }
-            else
-            {
-                Response.Redirect("default.aspx", false);
-                return;
-            }
-            
         }
 
         private void BindListView(string query, string sort)
@@ -77,6 +72,7 @@ namespace CDAS
         {
             gv_location_type.EditIndex = e.NewEditIndex;
             BindGrids();
+
             lbl_error_message.Text = "";
         }
 
@@ -102,7 +98,7 @@ namespace CDAS
             {
                 if(string.IsNullOrEmpty(full_name) || string.IsNullOrEmpty(abbrv_name) || string.IsNullOrEmpty(status_flag))
                 {
-                    throw new Exception("Values must not be null");
+                    throw new Exception("Values must not be empty");
                 }
                 if (full_name.Length > 70)
                 {
@@ -140,7 +136,7 @@ namespace CDAS
                         cmd.Parameters.AddWithValue("@fullname", full_name);
                         cmd.Parameters.AddWithValue("@abbrvname", abbrv_name);
                         cmd.Parameters.AddWithValue("@statusflag", status_flag);
-                        cmd.Parameters.AddWithValue("@changedby", "STEPHET");
+                        cmd.Parameters.AddWithValue("@changedby", Session["username"].ToString());
                         cmd.Parameters.AddWithValue("@changeddate", DateTime.Now);
                         conn.Open();
                         cmd.ExecuteNonQuery();
@@ -196,6 +192,9 @@ namespace CDAS
                     gv_admin_area.DataBind();
                 }
             }
+
+            
+            lbl_error_message.Text = "";
         }
 
         protected void gv_location_type_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -272,7 +271,7 @@ namespace CDAS
                         cmd.Parameters.AddWithValue("@fullname", full_name);
                         cmd.Parameters.AddWithValue("@abbrvname", abbrv_name);
                         cmd.Parameters.AddWithValue("@statusflag", status_flag);
-                        cmd.Parameters.AddWithValue("@changedby", "STEPHET");
+                        cmd.Parameters.AddWithValue("@changedby", Session["username"].ToString());
                         cmd.Parameters.AddWithValue("@changeddate", DateTime.Now);
                         conn.Open();
                         cmd.ExecuteNonQuery();
@@ -378,7 +377,7 @@ namespace CDAS
                         cmd.Parameters.AddWithValue("@fullname", full_name);
                         cmd.Parameters.AddWithValue("@abbrvname", abbrv_name);
                         cmd.Parameters.AddWithValue("@statusflag", status_flag);
-                        cmd.Parameters.AddWithValue("@changedby", "STEPHET");
+                        cmd.Parameters.AddWithValue("@changedby", Session["username"].ToString());
                         cmd.Parameters.AddWithValue("@changeddate", DateTime.Now);
                         conn.Open();
                         cmd.ExecuteNonQuery();
@@ -479,7 +478,7 @@ namespace CDAS
                         cmd.Parameters.AddWithValue("@fullname", full_name);
                         cmd.Parameters.AddWithValue("@abbrvname", abbrv_name);
                         cmd.Parameters.AddWithValue("@statusflag", status_flag);
-                        cmd.Parameters.AddWithValue("@changedby", "STEPHET");
+                        cmd.Parameters.AddWithValue("@changedby", Session["username"].ToString());
                         cmd.Parameters.AddWithValue("@changeddate", DateTime.Now);
                         cmd.Parameters.AddWithValue("@employeeid", employee_id);
                         conn.Open();
@@ -645,6 +644,21 @@ namespace CDAS
 
                 
                 //Refer to dropdownlist
+                if(ddl_maintenance_tables.SelectedValue == "Panel")
+                {
+                    if (string.IsNullOrEmpty(tb_insert_panel.Text))
+                    {
+                        throw new Exception("Panel value cannot be empty");
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(tb_insert_code.Text))
+                    {
+                        throw new Exception("Code value cannot be empty");
+                    }
+                }
+
                 if (ddl_maintenance_tables.SelectedValue == "AdminArea")
                 {
                     string verify_code = "SELECT COUNT(*) FROM [CDAS].[CDDBA].[EC_ADMIN_AREA] WHERE CODE = @code";
@@ -689,7 +703,7 @@ namespace CDAS
                         cmd.Parameters.AddWithValue("@full_name", tb_insert_full_name.Text.Trim());
                         cmd.Parameters.AddWithValue("@abbrv_name", tb_insert_abbrv_name.Text.Trim());
                         cmd.Parameters.AddWithValue("@status_flag", ddl_insert_status.Text.Trim());
-                        cmd.Parameters.AddWithValue("@changed_by", "STEPHET");
+                        cmd.Parameters.AddWithValue("@changed_by", Session["username"].ToString());
                         cmd.Parameters.AddWithValue("@changed_date", DateTime.Now);
                         cmd.Parameters.AddWithValue("@employee_ID", tb_insert_employee_ID.Text.Trim());
                         #endregion
@@ -742,7 +756,7 @@ namespace CDAS
                     {
                         if (string.IsNullOrEmpty(text.Text))
                         {
-                            throw new Exception("Values must not be null");
+                            throw new Exception("Values must not be empty or null");
                         }
                     }
 
@@ -770,7 +784,7 @@ namespace CDAS
                             cmd.Parameters.AddWithValue("@full_name", tb_insert_full_name.Text.Trim());
                             cmd.Parameters.AddWithValue("@abbrv_name", tb_insert_abbrv_name.Text.Trim());
                             cmd.Parameters.AddWithValue("@status_flag", ddl_insert_status.Text.Trim());
-                            cmd.Parameters.AddWithValue("@changed_by", "STEPHET");
+                            cmd.Parameters.AddWithValue("@changed_by", Session["username"].ToString());
                             cmd.Parameters.AddWithValue("@changed_date", DateTime.Now);
                             #endregion
 
@@ -800,7 +814,7 @@ namespace CDAS
                             cmd.Parameters.AddWithValue("@full_name", tb_insert_full_name.Text.Trim());
                             cmd.Parameters.AddWithValue("@abbrv_name", tb_insert_abbrv_name.Text.Trim());
                             cmd.Parameters.AddWithValue("@status_flag", ddl_insert_status.Text.Trim());
-                            cmd.Parameters.AddWithValue("@changed_by", "STEPHET");
+                            cmd.Parameters.AddWithValue("@changed_by", Session["username"].ToString());
                             cmd.Parameters.AddWithValue("@changed_date", DateTime.Now);
                             #endregion
 
@@ -868,6 +882,118 @@ namespace CDAS
         protected void btn_clear_Click(object sender, EventArgs e)
         {
             Insert_Clear();
+        }
+
+        protected void gv_location_type_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            /*
+            if(e.Row.RowType == DataControlRowType.DataRow && e.Row.RowState.HasFlag(DataControlRowState.Edit))
+            {
+                foreach (Control control in e.Row.Cells[0].Controls)
+                {
+                    if(control is LinkButton button && button.CommandName == "Update")
+                    {
+                        button.Attributes["Class"] = "gridview-update-btn";
+                        break;
+                    }
+                }
+
+                foreach(TableCell cell in e.Row.Cells)
+                {
+                    foreach (Control control in cell.Controls)
+                    {
+                        if(control is TextBox text)
+                        {
+                            text.Attributes["onkeydown"] = "return handleEnterKey(event);";
+                        }
+                    }
+                }
+            }
+            */
+        }
+
+        protected void gv_school_type_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            /*
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowState.HasFlag(DataControlRowState.Edit))
+            {
+                foreach (Control control in e.Row.Cells[0].Controls)
+                {
+                    if (control is LinkButton button && button.CommandName == "Update")
+                    {
+                        button.Attributes["Class"] = "gridview-update-btn";
+                        break;
+                    }
+                }
+
+                foreach (TableCell cell in e.Row.Cells)
+                {
+                    foreach (Control control in cell.Controls)
+                    {
+                        if (control is TextBox text)
+                        {
+                            text.Attributes["onkeydown"] = "return handleEnterKey(event);";
+                        }
+                    }
+                }
+            }
+            */
+        }
+
+        protected void gv_panel_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            /*
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowState.HasFlag(DataControlRowState.Edit))
+            {
+                foreach (Control control in e.Row.Cells[0].Controls)
+                {
+                    if (control is LinkButton button && button.CommandName == "Update")
+                    {
+                        button.Attributes["Class"] = "gridview-update-btn";
+                        break;
+                    }
+                }
+
+                foreach (TableCell cell in e.Row.Cells)
+                {
+                    foreach (Control control in cell.Controls)
+                    {
+                        if (control is TextBox text)
+                        {
+                            text.Attributes["onkeydown"] = "return handleEnterKey(event);";
+                        }
+                    }
+                }
+            }
+            */
+        }
+
+        protected void gv_admin_area_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            /*
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowState.HasFlag(DataControlRowState.Edit))
+            {
+                foreach (Control control in e.Row.Cells[0].Controls)
+                {
+                    if (control is LinkButton button && button.CommandName == "Update")
+                    {
+                        button.Attributes["Class"] = "gridview-update-btn";
+                        break;
+                    }
+                }
+
+                foreach (TableCell cell in e.Row.Cells)
+                {
+                    foreach (Control control in cell.Controls)
+                    {
+                        if (control is TextBox text)
+                        {
+                            text.Attributes["onkeydown"] = "return handleEnterKey(event);";
+                        }
+                    }
+                }
+            }
+            */
         }
     }
 }

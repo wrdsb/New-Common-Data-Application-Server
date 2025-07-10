@@ -69,31 +69,22 @@ namespace CDAS
         protected global::System.Web.UI.WebControls.LinkButton lb_logout;
 
         /// <summary>
-        /// maintenance_link control.
+        /// Li1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl maintenance_link;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Li1;
 
         /// <summary>
-        /// maintenance_tables_link control.
+        /// Li2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl maintenance_tables_link;
-
-        /// <summary>
-        /// create_link control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl create_link;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Li2;
 
         /// <summary>
         /// lbl_username2 control.

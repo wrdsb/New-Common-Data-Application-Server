@@ -5,17 +5,18 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container">
         <div class="row">
-            <asp:Panel ID="Panel1" runat="server" DefaultButton="lb_search">
-                <asp:Label ID="lbl_search" runat="server" Text="Location Code: "></asp:Label>
+            <asp:Panel ID="Panel1" runat="server" DefaultButton="lb_search" HorizontalAlign="Left">
+                <asp:Label ID="lbl_search" runat="server" Text="  School Code: " ></asp:Label>
                 <asp:TextBox ID="tb_search_code" runat="server" Width="40"></asp:TextBox>
-                <asp:Label ID="lbl_description" runat="server" Text="School Name: "></asp:Label>
+                <asp:Label ID="lbl_description" runat="server" Text="Location Name: "></asp:Label>
                 <asp:TextBox ID="tb_search_description" runat="server"></asp:TextBox>
+                <asp:Label ID="lbl_panel_type" runat="server" Text="Panel: "></asp:Label>
                 <asp:DropDownList ID="ddl_panel_type" runat="server" DataTextField="ABBRV_NAME" DataValueField="PANEL" Width="218" OnDataBound="ddl_panel_type_DataBound" DataSourceID="sds_school_type"></asp:DropDownList>
-                <asp:LinkButton ID="lb_search" runat="server" Text="Search" OnClick="btn_search_Click" CssClass="btn btn-default"></asp:LinkButton>
-                <asp:LinkButton ID="lb_insert" runat="server" Text="Create New" OnClick="lb_insert_Click" CssClass="btn btn-default" Style="float: right;"></asp:LinkButton>
+                <asp:LinkButton ID="lb_search" runat="server" Text="Search" OnClick="btn_search_Click" CssClass="btn btn-primary mb1 bg-blue"></asp:LinkButton>
+                <asp:LinkButton ID="lb_insert" runat="server" Text="Create New Location" OnClick="lb_insert_Click" CssClass="btn btn-default" Style="float: right;"></asp:LinkButton>
             </asp:Panel>
         </div>
-        <div class="row">
+        <div class="row" HorizontalAlign="Center">
             <asp:Label ID="lbl_record_count" runat="server" Text=""></asp:Label>
         </div>
         <div style="clear: both;"></div>
@@ -38,14 +39,13 @@
                                 <th style="text-align: left; width: 400px;">
                                     <d>Location Details</d></th>
                                 <th style="text-align: left; width: 500px;">
-                                    <d>School Name</d></th>
+                                    <d>Location Names</d></th>
                                 <th style="text-align: left; width: 500px;">
                                     <d>Address</d></th>
                                 <th style="text-align: left; width: 800px;">
                                     <d>Phone</d></th>
                                 <th style="text-align: left; width: 800px;">
                                     <d>Site Info</d></th>
-                                <th></th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -206,21 +206,21 @@
                                 <asp:HiddenField ID="hf_street_2" runat="server" Value='<%#Eval("street_2") %>' />
                             </td>
                             <td>
-                                <asp:Label ID="lbl_telephone" runat="server" Text="Phone:* ("></asp:Label>
+                                <asp:Label ID="lbl_telephone" runat="server" Text="Phone: ("></asp:Label>
                                 <asp:TextBox ID="tb_telephone_area" runat="server" Text='<%#Bind("telephone_area") %>' Width="40" MaxLength="3"></asp:TextBox>
                                 <asp:Label ID="Label1" runat="server" Text=") "></asp:Label>
                                 <asp:TextBox ID="tb_telephone_number" runat="server" Text='<%#Bind("telephone_no") %>' Width="70" MaxLength="7"></asp:TextBox><br />
                                 <asp:Label ID="lbl_telephone_extension" runat="server" Text="Extension: "></asp:Label>
-                                <asp:TextBox ID="tb_telephone_extension" runat="server" Text='<%#Bind("telephone_ext") %>' MaxLength="4"></asp:TextBox><br />
+                                <asp:TextBox ID="tb_telephone_extension" runat="server" Text='<%#Bind("telephone_ext") %>' Width="70" MaxLength="4"></asp:TextBox><br />
                                 <asp:Label ID="lbl_geographic_area_code" runat="server" Text="Geographic Area Code:*"></asp:Label>
                                 <asp:DropDownList ID="ddl_geographic_area_code" runat="server">
                                     <asp:ListItem Text="KIT" Value="KIT"></asp:ListItem>
                                     <asp:ListItem Text="WAT" Value="WAT"></asp:ListItem>
                                     <asp:ListItem Text="CAM" Value="CAM"></asp:ListItem>
                                 </asp:DropDownList><br />
-                                <asp:Label ID="lbl_speed_dial_number" runat="server" Text="Speed Dial Number:*"></asp:Label>
+                                <asp:Label ID="lbl_speed_dial_number" runat="server" Text="Speed Dial Number: "></asp:Label>
                                 <asp:TextBox ID="tb_speed_dial_number" runat="server" Text='<%#Bind("speed_dial_number") %>' MaxLength="3"></asp:TextBox><br />
-                                <asp:Label ID="lbl_fax_area" runat="server" Text="Fax:("></asp:Label>
+                                <asp:Label ID="lbl_fax_area" runat="server" Text="Fax: ("></asp:Label>
                                 <asp:TextBox ID="tb_fax_area" runat="server" Text='<%#Bind("fax_area") %>' MaxLength="3" Width="40"></asp:TextBox>
                                 <asp:Label ID="Label2" runat="server" Text=") "></asp:Label>
                                 <asp:TextBox ID="tb_fax_number" runat="server" Text='<%#Bind("fax_no") %>' Width="70" MaxLength="7"></asp:TextBox>
@@ -299,7 +299,7 @@
                                 <asp:Label ID="Label1_insert" runat="server" Text=") "></asp:Label>
                                 <asp:TextBox ID="tb_telephone_number_insert" runat="server"  Width="70" MaxLength="7"></asp:TextBox><br />
                                 <asp:Label ID="lbl_telephone_extension_insert" runat="server" Text="Extension: "></asp:Label>
-                                <asp:TextBox ID="tb_telephone_extension_insert" runat="server" ></asp:TextBox><br />
+                                <asp:TextBox ID="tb_telephone_extension_insert" runat="server" Width="70"></asp:TextBox><br />
                                 <asp:Label ID="lbl_geographic_area_code_insert" runat="server" Text="Geographic Area Code:*"></asp:Label>
                                 <asp:DropDownList ID="ddl_geographic_area_code_insert" runat="server" SelectedValue='<%#Bind("geographic_area_code") %>'>
                                     <asp:ListItem Text="Select.." Value=""></asp:ListItem>
@@ -307,9 +307,9 @@
                                     <asp:ListItem Text="WAT" Value="WAT"></asp:ListItem>
                                     <asp:ListItem Text="CAM" Value="CAM"></asp:ListItem>
                                 </asp:DropDownList><br />
-                                <asp:Label ID="lbl_speed_dial_number_insert" runat="server" Text="Speed Dial Number:*"></asp:Label>
+                                <asp:Label ID="lbl_speed_dial_number_insert" runat="server" Text="Speed Dial Number: "></asp:Label>
                                 <asp:TextBox ID="tb_speed_dial_number_insert" runat="server" MaxLength="3"></asp:TextBox><br />
-                                <asp:Label ID="lbl_fax_area_insert" runat="server" Text="Fax: *("></asp:Label>
+                                <asp:Label ID="lbl_fax_area_insert" runat="server" Text="Fax: ("></asp:Label>
                                 <asp:TextBox ID="tb_fax_area_insert" runat="server" MaxLength="3" Width="40"></asp:TextBox>
                                 <asp:Label ID="Label2_insert" runat="server" Text=")"></asp:Label>
                                 <asp:TextBox ID="tb_fax_number_insert" runat="server" Width="70" MaxLength="7"></asp:TextBox>
@@ -321,8 +321,8 @@
                                 <asp:Label ID="lbl_record_status_insert" runat="server" Text="Record Status:*"></asp:Label>
                                 <asp:DropDownList ID="ddl_record_status_insert" runat="server">
                                     <asp:ListItem Text="Select.." Value=""></asp:ListItem>
-                                    <asp:ListItem Text="A" Value="Semestered"></asp:ListItem>
-                                    <asp:ListItem Text="I" Value="Not Semestered"></asp:ListItem>
+                                    <asp:ListItem Text="A" Value="A"></asp:ListItem>
+                                    <asp:ListItem Text="I" Value="I"></asp:ListItem>
                                 </asp:DropDownList><br />
                                 <asp:Label ID="lbl_panel_insert" runat="server" Text="Panel:*"></asp:Label>
 
@@ -365,4 +365,20 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        document.addEventListener('keydown', function (event) {
+            var active = document.activeElement;
+            var tag = active.tagName.toLowerCase();
+
+            if (event.key === "Enter") {
+                if (tag === "input" && (active.id === "<%= tb_search_description.ClientID %>" || active.id === "<%= tb_search_code.ClientID %>")) {
+                    return true;
+                }
+                else if (tag !== "textarea") {
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+    </script>
 </asp:Content>
