@@ -184,7 +184,9 @@ namespace CDAS
                     gv_panel.DataBind();
                 }
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM [CDAS].[CDDBA].[EC_ADMIN_AREA] where status_flag = 'A'  order by CODE ASC", connstring))
+                string admin_query = "SELECT Tab1.*, q.superintendent, q.admin_assist FROM [CDAS].[CDDBA].[EC_ADMIN_AREA] TAB1 LEFT JOIN ( SELECT Tab2.Area_Code, MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Superintendent' THEN Tab2.COMBINED_NAME END) AS superintendent, MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Administrative Assistant' THEN Tab2.COMBINED_NAME END) AS admin_assist FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW] Tab2 GROUP BY Tab2.AREA_CODE ) q ON CODE = q.AREA_CODE";
+                string admin_query_post_join = admin_query += " where status_flag = 'A'  order by CODE ASC";
+                using (SqlDataAdapter adapter = new SqlDataAdapter(admin_query, connstring))
                 {
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
@@ -527,6 +529,16 @@ namespace CDAS
 
             btn_insert_maint_table.Visible = true;
             btn_clear.Visible = true;
+
+            tb_insert_code.Enabled = true;
+            tb_insert_full_name.Enabled = true;
+            tb_insert_full_name.Enabled = true;
+            ddl_insert_status.Enabled = true;
+            tb_insert_employee_ID.Enabled = true;
+            btn_insert_maint_table.Enabled = true;
+            btn_clear.Enabled = true;
+            tb_insert_abbrv_name.Enabled = true;
+
             if (ddl_maintenance_tables.SelectedValue == "LocationType")
             {
                 gv_location_type.Visible = true;
@@ -587,6 +599,17 @@ namespace CDAS
                 lbl_insert_panel.Visible = false;
                 lbl_insert_code.Visible = true;
                 tb_insert_code.Visible = true;
+
+                //Disable creation for admin area
+                tb_insert_code.Enabled = false;
+                tb_insert_full_name.Enabled = false;
+                tb_insert_full_name.Enabled = false;
+                ddl_insert_status.Enabled = false;
+                tb_insert_employee_ID.Enabled = false;
+                btn_insert_maint_table.Enabled = false;
+                btn_clear.Enabled = false;
+                tb_insert_abbrv_name.Enabled = false;
+
             }
             else
             {
@@ -608,6 +631,8 @@ namespace CDAS
                 btn_insert_maint_table.Visible = false;
                 btn_clear.Visible = false;
             }
+
+            
 
             lbl_error_message.Text = "";
             Insert_Clear();

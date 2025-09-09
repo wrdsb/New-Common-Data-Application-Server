@@ -84,15 +84,27 @@ namespace CDAS
             
             search_description = search_description.Replace('*', '%');
             search_description = search_description.Replace('?', '_');
-
+            string add_join = string.Format(" LEFT JOIN (SELECT Tab2.Area_Code, MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Superintendent' THEN Tab2.COMBINED_NAME END) AS superintendent, MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Administrative Assistant' THEN Tab2.COMBINED_NAME END) AS admin_assist FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW] Tab2 GROUP BY Tab2.AREA_CODE ) q ON LOCATION_AREA = q.AREA_CODE");
             if (string.IsNullOrEmpty(search_code) && string.IsNullOrEmpty(search_description))
             {
                 //Both Empty display everything
-                query = string.Format("select * from [CDAS].[dbo].[hd_ec_locations]");
-
+                query = string.Format("select Tab1.*, q.superintendent, q.admin_assist from [CDAS].[dbo].[hd_ec_locations] Tab1");
+                query += add_join;
                 if (ddl_panel_type.SelectedValue != "ALL")
                 {
                     query += " where PANEL = '" + ddl_panel_type.SelectedValue + "'";
+
+                    if (ddl_family_school.SelectedValue != "ALL")
+                    {
+                        query += " AND LOCATION_AREA = '" + ddl_family_school.SelectedValue + "'";
+                    }
+                }
+                else
+                {
+                    if (ddl_family_school.SelectedValue != "ALL")
+                    {
+                        query += " WHERE LOCATION_AREA = '" + ddl_family_school.SelectedValue + "'";
+                    }
                 }
             }
             else
@@ -100,8 +112,11 @@ namespace CDAS
                 //Theres values in atleast 1 of the 2 textboxes
                 if (!string.IsNullOrEmpty(search_code))
                 {
-                    query = string.Format("select * from [CDAS].[dbo].[hd_ec_locations] where ( location_code LIKE '%{0}%' OR alternate_location_code LIKE '%{0}%' OR school_code LIKE '%{0}%' ) ", search_code);
-                    
+                    query = string.Format("select Tab1.*, q.superintendent, q.admin_assist from [CDAS].[dbo].[hd_ec_locations] Tab1 ");
+                    query += add_join;
+                    string where_clause = string.Format(" where (location_code LIKE '%{0}%' OR alternate_location_code LIKE '%{0}%' OR school_code LIKE '%{0}%' ) ", search_code);
+                    query += where_clause;
+
                     if (!string.IsNullOrEmpty(search_description))
                     {
                         query += string.Format("AND (description_text LIKE '%{0}%'", search_description);
@@ -110,8 +125,11 @@ namespace CDAS
                 }
                 else
                 {
-                    query = string.Format("select * from [CDAS].[dbo].[hd_ec_locations] where (description_text LIKE '%{0}%' ", search_description);
-                    query += string.Format(" OR description_abbr LIKE '%{0}%')", search_description);
+                    query = string.Format("select Tab1.*, q.superintendent, q.admin_assist from [CDAS].[dbo].[hd_ec_locations] Tab1");
+                    query += add_join;
+                    string where_clause = string.Format(" where (description_text LIKE '%{0}%' ", search_description);
+                    query += where_clause;
+                    query += string.Format("OR description_abbr LIKE '%{0}%')", search_description);
                 }
                 
                 if (ddl_panel_type.SelectedValue != "ALL")
@@ -120,7 +138,15 @@ namespace CDAS
                 }
 
                 query += " AND record_status ='A'";
+
+                if (ddl_family_school.SelectedValue != "ALL")
+                {
+                    query += " AND LOCATION_AREA = '" + ddl_family_school.SelectedValue + "'";
+                }
             }
+
+            
+
 
             ViewState["query"] = query;
             ViewState["sort_expression"] = " ORDER BY location_code";
@@ -143,7 +169,7 @@ namespace CDAS
                 {
                     try
                     {
-                        lbl_record_count.Visible = true;
+                        //lbl_record_count.Visible = true;
                         conn.Open();
                         int rows_found = (int) cmd.ExecuteScalar();
                         string record_plural = "";
@@ -1256,6 +1282,16 @@ namespace CDAS
                 }
             }
             //lv_maint.DataBind();
+        }
+
+        protected void ddl_family_school_DataBound(object sender, EventArgs e)
+        {
+            ddl_family_school.Items.Insert(0, new ListItem("ALL", "ALL"));
+        }
+
+        protected void ddl_location_area_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

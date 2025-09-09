@@ -78,13 +78,22 @@ namespace CDAS
         protected global::System.Web.UI.WebControls.DropDownList ddl_panel_type;
 
         /// <summary>
-        /// lb_search control.
+        /// lbl_family control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lb_search;
+        protected global::System.Web.UI.WebControls.Label lbl_family;
+
+        /// <summary>
+        /// ddl_family_school control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_family_school;
 
         /// <summary>
         /// lb_insert control.
@@ -94,6 +103,15 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lb_insert;
+
+        /// <summary>
+        /// lb_search control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lb_search;
 
         /// <summary>
         /// lbl_record_count control.
@@ -166,5 +184,14 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sds_school_type;
+
+        /// <summary>
+        /// sds_family control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sds_family;
     }
 }

@@ -131,6 +131,7 @@ namespace CDAS
                 }
                 catch (Exception ex)
                 {
+                    
                     lbl_message.Text = ex.Message;
                     lbl_message.CssClass = "red1";
                 }

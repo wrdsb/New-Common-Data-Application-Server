@@ -33,7 +33,7 @@
                             <asp:ListItem Text="Location Type" Value="LocationType"></asp:ListItem>
                             <asp:ListItem Text="School Type" Value="SchoolType"></asp:ListItem>
                             <asp:ListItem Text="Panel" Value="Panel"></asp:ListItem>
-                            <asp:ListItem Text="Admin Area" Value="AdminArea"></asp:ListItem>
+                            <asp:ListItem Text="FOS" Value="AdminArea"></asp:ListItem>
                         </asp:DropDownList>
                         </asp:TableCell>
                     </asp:TableRow>
@@ -219,6 +219,8 @@
                         <asp:BoundField DataField="CHANGED_BY" HeaderText="Changed By" ReadOnly="true"/>
                         <asp:BoundField DataField="CHANGED_DATE" HeaderText="Changed Date" DataFormatString="{0:yyyy-MM-dd}" ReadOnly="true"/>
                         <asp:BoundField DataField="EMPLOYEE_ID" HeaderText="Employee ID"/>
+                        <asp:BoundField DataField="superintendent" HeaderText="SUPERINTENDENT" ReadOnly="true"/>
+                        <asp:BoundField DataField="admin_assist" HeaderText="ADMIN ASSIST" ReadOnly="true"/>
                     </Columns>
                     <PagerSettings Mode="NumericFirstLast"
                 FirstPageText="First"
