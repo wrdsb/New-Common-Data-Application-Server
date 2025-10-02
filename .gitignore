@@ -365,3 +365,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /CDAS/myConnectionStrings.config
+/CDAS/myConnectionString.config
+/CDAS/myConnectionString.config
