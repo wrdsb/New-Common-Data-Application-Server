@@ -184,8 +184,8 @@ namespace CDAS
                     gv_panel.DataBind();
                 }
 
-                string admin_query = "SELECT Tab1.*, q.superintendent, q.admin_assist FROM [CDAS].[CDDBA].[EC_ADMIN_AREA] TAB1 LEFT JOIN ( SELECT Tab2.Area_Code, MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Superintendent' THEN Tab2.COMBINED_NAME END) AS superintendent, MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Administrative Assistant' THEN Tab2.COMBINED_NAME END) AS admin_assist FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW] Tab2 GROUP BY Tab2.AREA_CODE ) q ON CODE = q.AREA_CODE";
-                string admin_query_post_join = admin_query += " where status_flag = 'A'  order by CODE ASC";
+                string admin_query = "SELECT * FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW]";
+                string admin_query_post_join = admin_query += " order by AREA_CODE ASC";
                 using (SqlDataAdapter adapter = new SqlDataAdapter(admin_query, connstring))
                 {
                     DataTable dataTable = new DataTable();
@@ -429,16 +429,21 @@ namespace CDAS
             string connstring = ConfigurationManager.ConnectionStrings["DB_CDAS"].ConnectionString;
             SqlConnection conn = new SqlConnection(connstring);
             SqlCommand cmd = null;
-
             string code = gv_admin_area.DataKeys[e.RowIndex].Value.ToString();
-            string full_name = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[2].Controls[0]).Text.Trim();
-            string abbrv_name = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[3].Controls[0]).Text.Trim();
+            string full_name = gv_admin_area.Rows[e.RowIndex].Cells[2].Text.Trim();
+            string abbrv_name = gv_admin_area.Rows[e.RowIndex].Cells[3].Text.Trim();
             DropDownList ddl_status_flag = (DropDownList)gv_admin_area.Rows[e.RowIndex].Cells[4].FindControl("ddl_status_flag");
             string status_flag = ddl_status_flag.SelectedValue;
-            string employee_id = ((TextBox)gv_admin_area.Rows[e.RowIndex].Cells[7].Controls[0]).Text.Trim();
-            
+            string employee_id = ((TextBox)gv_admin_area.Rows[e.RowIndex].FindControl("txt_employee_id")).Text.Trim();
+            string admin_type = ((DropDownList)gv_admin_area.Rows[e.RowIndex].FindControl("ddl_admin_type")).Text.Trim();
+            string combined_name = ((Label)gv_admin_area.Rows[e.RowIndex].FindControl("lbl_combined_name")).Text.Trim();
+
+            string original_combined_name = ((HiddenField)gv_admin_area.Rows[e.RowIndex].FindControl("hf_combined_name")).Value.ToString().Trim();
+            string original_admin_type = ((HiddenField)gv_admin_area.Rows[e.RowIndex].FindControl("hf_admin_type")).Value.ToString().Trim();
+            string original_employee_id = ((HiddenField)gv_admin_area.Rows[e.RowIndex].FindControl("hf_employee_id")).Value.ToString().Trim();
             try
             {
+                //throw new Exception("orig name " + original_combined_name + " orig admin " + original_admin_type + " orig empid " + original_employee_id);
                 if (string.IsNullOrEmpty(full_name) || string.IsNullOrEmpty(abbrv_name) || string.IsNullOrEmpty(status_flag))
                 {
                     throw new Exception("Values must not be null");
@@ -468,11 +473,41 @@ namespace CDAS
                 }
 
 
+                /*
+                using (conn = new SqlConnection(connstring))
+                {
+                    string query = "UPDATE [CDAS].[CDDBA].[HD_CD_ADMINISTRATION] SET ADMIN_TYPE=@admin_type, EMPLOYEE_ID=@employee_id WHERE AREA_CODE = @code AND ADMIN_TYPE = @oldAdminType AND EMPLOYEE_ID = @oldEmployeeID";
 
+                    using (cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@code", code.Trim());
+                        cmd.Parameters.AddWithValue("@admin_type", admin_type.Trim());
+                        cmd.Parameters.AddWithValue("@employee_id", employee_id.Trim());
+                        cmd.Parameters.AddWithValue("@oldAdminType", original_admin_type.Trim());
+                        cmd.Parameters.AddWithValue("@oldEmployeeID", original_employee_id.Trim());
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                }
+                */
+
+                //using
+                
+                conn.Open();
+                string query = string.Format("UPDATE [CDAS].[CDDBA].[HD_CD_ADMINISTRATION] SET ADMIN_TYPE='{0}', EMPLOYEE_ID='{1}' WHERE AREA_CODE='{2}' AND ADMIN_TYPE='{3}' AND EMPLOYEE_ID='{4}'", admin_type.Trim(), employee_id.Trim(), code.Trim(), original_admin_type.Trim(), original_employee_id.Trim());
+                cmd = new SqlCommand(query, conn);
+                int rowsAdmin = cmd.ExecuteNonQuery();
+
+                query = string.Format("UPDATE [CDAS].[CDDBA].[EC_ADMIN_AREA] SET FULL_NAME='{0}', ABBRV_NAME='{1}', STATUS_FLAG='{2}', CHANGED_BY='{3}', CHANGED_DATE='{4}', EMPLOYEE_ID='{5}' WHERE CODE='{6}'", full_name.Trim(), abbrv_name.Trim(), status_flag, Session["username"].ToString(), DateTime.Now, employee_id.Trim(), code.Trim());
+                cmd = new SqlCommand(query, conn);
+                int rowsArea =  cmd.ExecuteNonQuery();
+                conn.Close();
+                /*
                 using (conn = new SqlConnection(connstring))
                 {
                     string query = "UPDATE [CDAS].[CDDBA].[EC_ADMIN_AREA] SET full_name=@fullname, abbrv_name=@abbrvname, status_flag=@statusflag," +
-                        " changed_by=@changedby, changed_date=@changeddate, employee_id=@employeeid WHERE CODE = @code";
+                        " changed_by=@changedby, changed_date=@changeddate, employee_id=@employeeid WHERE CODE = @code AND employee_id = @oldEmployeeID AND full_name = @oldFullName";
 
                     using (cmd = new SqlCommand(query, conn))
                     {
@@ -483,13 +518,19 @@ namespace CDAS
                         cmd.Parameters.AddWithValue("@changedby", Session["username"].ToString());
                         cmd.Parameters.AddWithValue("@changeddate", DateTime.Now);
                         cmd.Parameters.AddWithValue("@employeeid", employee_id);
+
+                        cmd.Parameters.AddWithValue("@oldEmployeeID", original_employee_id.Trim());
+                        cmd.Parameters.AddWithValue("@oldFullName", original_combined_name.Trim());
                         conn.Open();
                         cmd.ExecuteNonQuery();
                         conn.Close();
                     }
                 }
+                */
+                //throw new Exception("Table found: " )
                 gv_admin_area.EditIndex = -1;
                 BindGrids();
+                //throw new Exception(query);
             }
             catch (Exception ex)
             {
@@ -597,18 +638,33 @@ namespace CDAS
                 gv_admin_area.PageIndex = 0;
                 tb_insert_panel.Visible = false;
                 lbl_insert_panel.Visible = false;
-                lbl_insert_code.Visible = true;
-                tb_insert_code.Visible = true;
+                lbl_insert_code.Visible = false;
+                tb_insert_code.Visible = false;
+                lbl_insert_full_name.Visible = false;
+                lbl_insert_abbrv_name.Visible = false;
 
                 //Disable creation for admin area
                 tb_insert_code.Enabled = false;
+                tb_insert_code.Visible = false;
                 tb_insert_full_name.Enabled = false;
-                tb_insert_full_name.Enabled = false;
+                tb_insert_full_name.Visible = false;
                 ddl_insert_status.Enabled = false;
+                ddl_insert_status.Visible = false;
                 tb_insert_employee_ID.Enabled = false;
+                tb_insert_employee_ID.Visible = false;
                 btn_insert_maint_table.Enabled = false;
+                btn_insert_maint_table. Visible = false;
                 btn_clear.Enabled = false;
+                btn_clear.Visible = false;
                 tb_insert_abbrv_name.Enabled = false;
+                tbl_insertion.Visible = true;
+
+                lbl_maintenance_tables.Visible = true;
+                lbl_insert.Visible = false;
+                lbl_insert_status.Visible=false;
+                lbl_insert_employee_ID.Visible=false;
+                tb_insert_abbrv_name.Visible=false;
+                //ddl_maintenance_tables_status.Visible = true;
 
             }
             else

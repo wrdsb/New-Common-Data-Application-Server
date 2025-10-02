@@ -9,14 +9,13 @@
                 <asp:Label ID="lbl_search" runat="server" Text="  School Alpha Code: " ></asp:Label>
                 <asp:TextBox ID="tb_search_code" runat="server" Width="40"></asp:TextBox>
                 <asp:Label ID="lbl_description" runat="server" Text="Location Name: "></asp:Label>
-                <asp:TextBox ID="tb_search_description" runat="server"></asp:TextBox>
+                <asp:TextBox ID="tb_search_description" runat="server" Width="175"></asp:TextBox>
                 <asp:Label ID="lbl_panel_type" runat="server" Text="Panel: "></asp:Label>
-                <asp:DropDownList ID="ddl_panel_type" runat="server" DataTextField="ABBRV_NAME" DataValueField="PANEL" Width="218" OnDataBound="ddl_panel_type_DataBound" DataSourceID="sds_school_type"></asp:DropDownList>
+                <asp:DropDownList ID="ddl_panel_type" runat="server" DataTextField="ABBRV_NAME" DataValueField="PANEL" Width="110" OnDataBound="ddl_panel_type_DataBound" DataSourceID="sds_school_type"></asp:DropDownList>
                 <asp:Label ID="lbl_family" runat="server" Text="Family of School: "></asp:Label>
-                <asp:DropDownList ID="ddl_family_school" runat="server" DataTextField="ABBRV_NAME" DataValueField="AREA_CODE" OnDataBound="ddl_family_school_DataBound" DataSourceID="sds_family"></asp:DropDownList><br />
-                
-                <asp:LinkButton ID="lb_insert" runat="server" Text="Create New Location" OnClick="lb_insert_Click" CssClass="btn btn-default" Style="float: left;"></asp:LinkButton>
-                <asp:LinkButton ID="lb_search" runat="server" Text="Search" OnClick="btn_search_Click" CssClass="btn btn-primary mb1 bg-blue" Style="float: right;"></asp:LinkButton>
+                <asp:DropDownList ID="ddl_family_school" runat="server" DataTextField="ABBRV_NAME" DataValueField="AREA_CODE" OnDataBound="ddl_family_school_DataBound" DataSourceID="sds_family"></asp:DropDownList>               
+                <asp:LinkButton ID="lb_search" runat="server" Text="Search" OnClick="btn_search_Click" CssClass="btn btn-primary mb1 bg-blue"></asp:LinkButton>
+                <asp:LinkButton ID="lb_insert" runat="server" Text="Create New Location" OnClick="lb_insert_Click" CssClass="btn btn-default"></asp:LinkButton>
             </asp:Panel>
         </div>
         <div class="row" HorizontalAlign="Center">
@@ -105,7 +104,7 @@
                                 Record Status:
                                 <asp:Label ID="lbl_record_status" runat="server" Text='<%#Eval("record_status") %>'></asp:Label><br />
                                 Panel:
-                                <asp:Label ID="lbl_panel" runat="server" Text='<%#Eval("panel") %>'></asp:Label>
+                                <asp:Label ID="lbl_panel" runat="server" Text='<%#Eval("PANEL_FULL_NAME") %>'></asp:Label>
                             </td>
                             <td>
                             <td style="text-align: right;">
@@ -163,7 +162,7 @@
                                 Record Status:
                                 <asp:Label ID="lbl_record_status" runat="server" Text='<%#Eval("record_status") %>'></asp:Label><br />
                                 Panel:
-                                <asp:Label ID="lbl_panel" runat="server" Text='<%#Eval("panel") %>'></asp:Label>
+                                <asp:Label ID="lbl_panel" runat="server" Text='<%#Eval("PANEL_FULL_NAME") %>'></asp:Label>
                             </td>
                             <td>
                             <td style="text-align: right;">
@@ -182,8 +181,6 @@
                             <td>
                                 <asp:Label ID="lbl_alternate_location_code" runat="server" Text="Alternate Location Code:"></asp:Label>
                                 <asp:TextBox ID="tb_alternate_location_code" runat="server" Text='<%#Bind("alternate_location_code") %>' MaxLength="8"></asp:TextBox><br />
-                                <asp:Label ID="lbl_location_area" runat="server" Text="FOS: *"></asp:Label>
-                                <asp:DropDownList ID="ddl_location_area" runat="server" DataSourceID="sds_admin_area" DataTextField="CODE" DataValueField="code" AppendDataBoundItems="true" OnSelectedIndexChanged="ddl_location_area_SelectedIndexChanged"></asp:DropDownList><br />
                                 <asp:Label ID="lbl_location_type" runat="server" Text="Location Type: *"></asp:Label>
                                 <asp:DropDownList ID="ddl_location_type" runat="server" DataSourceID="sds_location_type" DataTextField="CODE" DataValueField="code" AppendDataBoundItems="true" OnSelectedIndexChanged="ddl_location_type_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList><br />
@@ -193,6 +190,8 @@
                                     <asp:ListItem Text="E" Value="Not Semestered"></asp:ListItem>
                                     <asp:ListItem Text="S" Value="Not Semestered"></asp:ListItem>
                                 </asp:DropDownList><br />
+                                <asp:Label ID="lbl_location_area" runat="server" Text="FOS: *"></asp:Label>
+                                <asp:DropDownList ID="ddl_location_area" runat="server" DataSourceID="sds_family" DataTextField="ABBRV_NAME" DataValueField="AREA_CODE" AppendDataBoundItems="true" OnSelectedIndexChanged="ddl_location_area_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList><br />
                                 <asp:Label ID="lbl_super" runat="server" Text="SuperIntendent: "></asp:Label><br />
                                 <asp:TextBox ID="tb_super" runat="server" Enabled="false" Text='<%#Bind("superintendent") %>'></asp:TextBox>
                                 <asp:Label ID="lbl_admin_assist" runat="server" Text="Admin Assistant: "></asp:Label><br />
@@ -249,7 +248,7 @@
                                     <asp:ListItem Text="I" Value="I"></asp:ListItem>
                                 </asp:DropDownList><br />
                                 <asp:Label ID="lbl_panel" runat="server" Text="Panel:*"></asp:Label>
-                                <asp:DropDownList ID="ddl_panel" runat="server" DataSourceID="sds_panel" DataTextField="PANEL" DataValueField="Panel" AppendDataBoundItems="true" >
+                                <asp:DropDownList ID="ddl_panel" runat="server" DataSourceID="sds_panel" DataTextField="FULL_NAME" DataValueField="Panel" AppendDataBoundItems="true" >
                                 </asp:DropDownList>
                             </td>
                             <td style="text-align: right;">
@@ -341,7 +340,7 @@
                                 </asp:DropDownList><br />
                                 <asp:Label ID="lbl_panel_insert" runat="server" Text="Panel:*"></asp:Label>
 
-                                <asp:DropDownList ID="ddl_panel_insert" runat="server" DataSourceID="sds_panel" DataTextField="PANEL" DataValueField="Panel" AppendDataBoundItems="true">
+                                <asp:DropDownList ID="ddl_panel_insert" runat="server" DataSourceID="sds_panel" DataTextField="FULL_NAME" DataValueField="Panel" AppendDataBoundItems="true">
                                     <asp:ListItem Text="Select.." Value=""></asp:ListItem>
                                 </asp:DropDownList><br />
                             </td>
@@ -369,7 +368,7 @@
                 <asp:SqlDataSource ID="sds_location_type" runat="server" ConnectionString="<%$ ConnectionStrings:DB_CDAS %>"
                     SelectCommand="select code, full_name, abbrv_name from [CDAS].[CDDBA].[EC_LOCATION_TYPE]"></asp:SqlDataSource>
                 <asp:SqlDataSource ID="sds_panel" runat="server" ConnectionString="<%$ ConnectionStrings:DB_CDAS %>"
-                    SelectCommand="select panel from [CDAS].[CDDBA].[EC_PANEL] where status_flag = 'A'"></asp:SqlDataSource>
+                    SelectCommand="select panel, Full_Name from [CDAS].[CDDBA].[EC_PANEL] where status_flag = 'A'"></asp:SqlDataSource>
                 <asp:SqlDataSource ID="sds_location" runat="server" ConnectionString="<%$ ConnectionStrings:DB_CDAS %>"
                     SelectCommand="select full_name, abbrv_name from [CDAS].[CDDBA].[EC_LOCATION]"></asp:SqlDataSource>
                 <asp:SqlDataSource ID="sds_admin_area" runat="server" ConnectionString="<%$ ConnectionStrings:DB_CDAS %>"
@@ -377,7 +376,8 @@
                 <asp:SqlDataSource ID="sds_school_type" runat="server" ConnectionString="<%$ ConnectionStrings:DB_CDAS %>"></asp:SqlDataSource>
                 <asp:SqlDataSource ID="sds_family" runat="server" ConnectionString="<%$ ConnectionStrings:DB_CDAS %>"
                     SelectCommand="select distinct abbrv_name, area_code from [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW]"></asp:SqlDataSource>
-                
+                <asp:SqlDataSource ID="sds_panel_display" runat="server" ConnectionString="<%$ ConnectionStrings:DB_CDAS %>"
+                    SelectCommand="select panel, abbrv_name from [CDAS].[CDDBA].[EC_PANEL] where status_flag = 'A'"></asp:SqlDataSource>
             </div>
         </div>
     </div>
