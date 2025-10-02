@@ -96,15 +96,6 @@ namespace CDAS
         protected global::System.Web.UI.WebControls.DropDownList ddl_family_school;
 
         /// <summary>
-        /// lb_insert control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lb_insert;
-
-        /// <summary>
         /// lb_search control.
         /// </summary>
         /// <remarks>
@@ -112,6 +103,15 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lb_search;
+
+        /// <summary>
+        /// lb_insert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lb_insert;
 
         /// <summary>
         /// lbl_record_count control.
@@ -193,5 +193,14 @@ namespace CDAS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sds_family;
+
+        /// <summary>
+        /// sds_panel_display control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sds_panel_display;
     }
 }

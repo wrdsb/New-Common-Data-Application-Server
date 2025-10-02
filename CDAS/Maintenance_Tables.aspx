@@ -192,19 +192,19 @@
                 LastPageText="Last"
                 Position="Bottom" />
                 </asp:GridView>
-                <asp:GridView ID="gv_admin_area" runat="server" Visible="false" AutoGenerateColumns="false" AutoGenerateEditButton="true" GridLines="Both" BorderWidth="1px" BorderStyle="Solid"  CssClass="grid-border aspNetGridView"
+                <asp:GridView ID="gv_admin_area" runat="server" Visible="false" AutoGenerateColumns="false" AutoGenerateEditButton="true" GridLines="Both" BorderWidth="1px" BorderStyle="Solid"  CssClass="grid-border aspNetGridView" EnableViewState="true"
                     AllowPaging="true"
                     PageSize="10"
                     OnPageIndexChanging="gv_admin_area_PageIndexChanging"
-                    DataKeyNames="CODE"
+                    DataKeyNames="AREA_CODE"
                     OnRowEditing="gv_admin_area_RowEditing"
                     OnRowUpdating="gv_admin_area_RowUpdating"
                     OnRowCancelingEdit="gv_admin_area_RowCancelingEdit"
                     OnRowDataBound="gv_admin_area_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="CODE" HeaderText="Code" ReadOnly="true"/>
-                        <asp:BoundField DataField="FULL_NAME" HeaderText="Full Name"/>
-                        <asp:BoundField DataField="ABBRV_NAME" HeaderText="Abbrv Name" />
+                        <asp:BoundField DataField="AREA_CODE" HeaderText="FOS" ReadOnly="true"/>
+                        <asp:BoundField DataField="FULL_NAME" HeaderText="Area Full Name" ReadOnly="true"/>
+                        <asp:BoundField DataField="ABBRV_NAME" HeaderText="Abbrv Name" ReadOnly="true"/>
                         <asp:TemplateField HeaderText="Status Flag">
                             <ItemTemplate>
                                 <asp:Label ID="lbl_status" runat="server" Text='<%# Eval("STATUS_FLAG") %>'></asp:Label>
@@ -216,11 +216,42 @@
                                 </asp:DropDownList>
                             </EditItemTemplate>
                         </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Employee ID">
+                            <ItemTemplate>
+                                <%# Eval("EMPLOYEE_ID") %>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:TextBox ID="txt_employee_id" runat="server" Text='<%# Bind("EMPLOYEE_ID") %>'></asp:TextBox>
+                                <asp:HiddenField ID="hf_employee_id" runat="server" Value='<%#Eval("EMPLOYEE_ID") %>' />
+                            </EditItemTemplate>
+                        </asp:TemplateField>
+                        
+                        <asp:TemplateField HeaderText="Employee Name">
+                            <ItemTemplate>
+                                <%# Eval("COMBINED_NAME") %>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:Label ID="lbl_combined_name" runat="server" Text='<%# Bind("COMBINED_NAME") %>'></asp:Label>
+                                <asp:HiddenField ID="hf_combined_name" runat="server" Value='<%#Eval("COMBINED_NAME") %>' />
+                            </EditItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="ADMIN TYPE">
+                            <ItemTemplate>
+                                <%# Eval("ADMIN_TYPE") %>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList ID="ddl_admin_type" runat="server" SelectedValue='<%# Bind("ADMIN_TYPE") %>'>
+                                    <asp:ListItem Text="Director" Value="Director"></asp:ListItem>
+                                    <asp:ListItem Text="Administrative Assistant" Value="Administrative Assistant"></asp:ListItem>
+                                    <asp:ListItem Text="Associate Director" Value="Associate Director"></asp:ListItem>
+                                    <asp:ListItem Text="Superintendent" Value="Superintendent"></asp:ListItem>
+                                    <asp:ListItem Text="Executive Assistant to the Director" Value="Executive Assistant to the Director"></asp:ListItem>
+                                </asp:DropDownList>
+                                <asp:HiddenField ID="hf_admin_type" runat="server" Value='<%#Eval("ADMIN_TYPE") %>' />
+                            </EditItemTemplate>
+                        </asp:TemplateField>
                         <asp:BoundField DataField="CHANGED_BY" HeaderText="Changed By" ReadOnly="true"/>
                         <asp:BoundField DataField="CHANGED_DATE" HeaderText="Changed Date" DataFormatString="{0:yyyy-MM-dd}" ReadOnly="true"/>
-                        <asp:BoundField DataField="EMPLOYEE_ID" HeaderText="Employee ID"/>
-                        <asp:BoundField DataField="superintendent" HeaderText="SUPERINTENDENT" ReadOnly="true"/>
-                        <asp:BoundField DataField="admin_assist" HeaderText="ADMIN ASSIST" ReadOnly="true"/>
                     </Columns>
                     <PagerSettings Mode="NumericFirstLast"
                 FirstPageText="First"

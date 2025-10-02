@@ -33,7 +33,7 @@ namespace CDAS
             {
                 if (!IsPostBack)
                 {
-                    sds_school_type.SelectCommand = "select panel, ABBRV_NAME from [CDAS].[CDDBA].[EC_PANEL] order by ABBRV_NAME";
+                    sds_school_type.SelectCommand = "select panel, ABBRV_NAME from [CDAS].[CDDBA].[EC_PANEL] where status_flag = 'A' order by ABBRV_NAME";
                     ddl_panel_type.DataBind();
                 }
             }
@@ -84,11 +84,13 @@ namespace CDAS
             
             search_description = search_description.Replace('*', '%');
             search_description = search_description.Replace('?', '_');
-            string add_join = string.Format(" LEFT JOIN (SELECT Tab2.Area_Code, MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Superintendent' THEN Tab2.COMBINED_NAME END) AS superintendent, MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Administrative Assistant' THEN Tab2.COMBINED_NAME END) AS admin_assist FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW] Tab2 GROUP BY Tab2.AREA_CODE ) q ON LOCATION_AREA = q.AREA_CODE");
+            string add_join = string.Format(" LEFT JOIN (SELECT Tab2.Area_Code, COALESCE( MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Superintendent' THEN Tab2.COMBINED_NAME END), MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Director' THEN Tab2.COMBINED_NAME END), MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Associate Director' THEN Tab2.COMBINED_NAME END)) AS superintendent," +
+                " COALESCE( MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Administrative Assistant' THEN Tab2.COMBINED_NAME END), MAX(CASE WHEN Tab2.ADMIN_TYPE = 'Executive Assistant to the Director' THEN Tab2.COMBINED_NAME END)) AS admin_assist FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW] Tab2 GROUP BY Tab2.AREA_CODE ) q ON LOCATION_AREA = q.AREA_CODE");
+            add_join += string.Format(" LEFT JOIN [CDAS].[CDDBA].[EC_PANEL] pnl ON Tab1.Panel = pnl.Panel");
             if (string.IsNullOrEmpty(search_code) && string.IsNullOrEmpty(search_description))
             {
                 //Both Empty display everything
-                query = string.Format("select Tab1.*, q.superintendent, q.admin_assist from [CDAS].[dbo].[hd_ec_locations] Tab1");
+                query = string.Format("select Tab1.*, q.superintendent, q.admin_assist, pnl.Full_Name AS PANEL_FULL_NAME from [CDAS].[dbo].[hd_ec_locations] Tab1");
                 query += add_join;
                 if (ddl_panel_type.SelectedValue != "ALL")
                 {
@@ -1291,7 +1293,83 @@ namespace CDAS
 
         protected void ddl_location_area_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            DropDownList location_area = (DropDownList)sender;
+            ListViewDataItem item = (ListViewDataItem)location_area.NamingContainer;
+            TextBox tb_super = (TextBox)item.FindControl("tb_super");
+            TextBox tb_admin_assist = (TextBox)item.FindControl("tb_admin_assist");
+            string superintendent, admin_assist;
+
+            superintendent = retrieve_name(location_area.SelectedValue, true);
+            admin_assist = retrieve_name(location_area.SelectedValue, false);
+
+            tb_super.Text = superintendent;
+            tb_admin_assist.Text = admin_assist;
+        }
+
+        private string retrieve_name(string FOS, bool superintendent)
+        {
+            string result = "";
+            //Get names using FOS and either "superintendent" or "admin assist"
+
+            string connstring = ConfigurationManager.ConnectionStrings["DB_CDAS"].ConnectionString;
+            if (superintendent) {
+                using (SqlConnection conn = new SqlConnection(connstring))
+                {
+                    using (SqlCommand cmd = new SqlCommand(@" SELECT COMBINED_NAME
+                    FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW] 
+                    WHERE AREA_CODE = @Area_Code AND ADMIN_TYPE = 'Superintendent'", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Area_Code", FOS);
+                        conn.Open();
+
+                        object value = cmd.ExecuteScalar();
+                        if (value != null && value != DBNull.Value) 
+                        {
+                            result = value.ToString();
+                        }
+                        conn.Close();
+                    }
+
+                    if(string.IsNullOrEmpty(result))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(@" SELECT COMBINED_NAME
+                        FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW] 
+                        WHERE AREA_CODE = @Area_Code AND ADMIN_TYPE = 'Director'", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Area_Code", FOS);
+                            conn.Open();
+                            object value = cmd.ExecuteScalar();
+                            if (value != null && value != DBNull.Value)
+                            {
+                                result = value.ToString();
+                            }
+                            conn.Close();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                using (SqlConnection conn = new SqlConnection(connstring))
+                {
+                    using (SqlCommand cmd = new SqlCommand(@" SELECT COMBINED_NAME
+                    FROM [CDAS].[CDDBA].[HD_CD_ADMIN_AREA_VW] 
+                    WHERE AREA_CODE = @Area_Code AND ADMIN_TYPE = 'Administrative Assistant'", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Area_Code", FOS);
+                        conn.Open();
+
+                        object value = cmd.ExecuteScalar();
+                        if (value != null && value != DBNull.Value)
+                        {
+                            result = value.ToString();
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
